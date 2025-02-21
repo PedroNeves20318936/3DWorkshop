@@ -40,8 +40,10 @@ AIMesh* g_creatureMesh = nullptr;
 vec3 g_beastPos = vec3(2.0f, 0.0f, 0.0f);
 float g_beastRotation = 0.0f;
 AIMesh* g_planetMesh = nullptr;
+AIMesh* g_duckMesh = nullptr;
 
 int g_showing = 0;
+int g_showingCamera = 0;
 int g_NumExamples = 3;
 
 //Global Game Object
@@ -147,6 +149,11 @@ int main()
 	g_planetMesh = new AIMesh(string("Assets\\gsphere.obj"));
 	if (g_planetMesh) {
 		g_planetMesh->addTexture(string("Assets\\Textures\\Hodges_G_MountainRock1.jpg"), FIF_JPEG);
+	}
+
+	g_duckMesh = new AIMesh(string("Assets\\duck\\rubber_duck_toy_4k.obj"));
+	if (g_duckMesh) {
+		g_duckMesh->addTexture(string("Assets\\duck\\rubber_duck_toy_diff_4k.jpg"), FIF_JPEG);
 	}
 
 	//
@@ -262,6 +269,17 @@ void renderScene()
 			g_planetMesh->setupTextures();
 			g_planetMesh->render();
 		}
+
+		if (g_duckMesh) {
+
+			// Setup transforms
+			Helper::SetUniformLocation(g_texDirLightShader, "modelMatrix", &pLocation);
+			mat4 modelTransform = glm::translate(identity<mat4>(), vec3(0.0, 0.0, 0.0));
+			glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
+
+			g_duckMesh->setupTextures();
+			g_duckMesh->render();
+		}
 	}
 	break;
 
@@ -275,7 +293,7 @@ void renderScene()
 		Helper::SetUniformLocation(g_flatColourShader, "projMatrix", &pLocation);
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraProjection);
 		Helper::SetUniformLocation(g_flatColourShader, "modelMatrix", &pLocation);
-		mat4 modelTransform = glm::translate(identity<mat4>(), vec3(2.0, 0.0, 2.0));
+		mat4 modelTransform = glm::translate(identity<mat4>(), vec3(2.0, 0.0, 0.0));
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
 
 		g_cube->render();
@@ -334,6 +352,11 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 		case GLFW_KEY_SPACE:
 			g_showing++;
 			g_showing = g_showing % g_NumExamples;
+
+		case GLFW_KEY_C:
+			g_showingCamera = (g_showingCamera + 1) % g_Scene->GetCameraCount();
+			g_Scene->SwitchCamera(g_showingCamera);
+			break;
 
 		default:
 		{

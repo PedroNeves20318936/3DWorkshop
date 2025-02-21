@@ -339,3 +339,14 @@ void Scene::Init()
 		(*it)->Init(this);
 	}
 }
+
+void Scene::SwitchCamera(int cameraIndex)
+{
+	cameraIndex = cameraIndex % m_Cameras.size();
+
+	// Get the iterator to the new camera
+	auto it = m_Cameras.begin();
+	std::advance(it, cameraIndex);
+
+	m_useCamera = *it;
+}

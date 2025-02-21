@@ -47,6 +47,11 @@ public:
 	//initialise links between items in the scene
 	void Init();
 
+	void SwitchCamera(int cameraIndex);
+
+	int GetCameraCount() const { return static_cast<int>(m_Cameras.size()); }
+
+
 protected:
 
 	//data structures containing pointers to all our stuff
