@@ -1,4 +1,4 @@
-#include "Scene.h"
+﻿#include "Scene.h"
 #include "GameObject.h"
 #include "CameraFactory.h"
 #include "Camera.h"
@@ -350,3 +350,26 @@ void Scene::SwitchCamera(int cameraIndex)
 
 	m_useCamera = *it;
 }
+
+
+void Scene::resizeWindowScene(int _width, int _height)
+{
+	if (m_Cameras.empty())
+	{
+		cout << "No cameras available!" << endl;
+		return;
+	}
+
+	if (_height == 0) _height = 1;
+
+	float newAspect = static_cast<float>(_width) / static_cast<float>(_height);
+	cout << "Resizing window! New aspect: " << newAspect << " (Width: " << _width << ", Height: " << _height << ")" << endl;
+
+	for (Camera* cam : m_Cameras)
+	{
+		cam->setAspect(newAspect);
+	}
+
+	glViewport(0, 0, _width, _height);
+}
+

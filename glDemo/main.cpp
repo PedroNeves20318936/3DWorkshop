@@ -329,12 +329,17 @@ void updateScene()
 void resizeWindow(GLFWwindow* _window, int _width, int _height)
 {
 	if (g_mainCamera) {
-
 		g_mainCamera->setAspect((float)_width / (float)_height);
 	}
 
-	glViewport(0, 0, _width, _height);		// Draw into entire window
+	glViewport(0, 0, _width, _height); // Draw into the entire window
+
+	// Automatically update scene when window is resized
+	if (g_Scene) {
+		g_Scene->resizeWindowScene(_width, _height);
+	}
 }
+
 
 
 // Function to call to handle keyboard input
@@ -356,6 +361,11 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 		case GLFW_KEY_C:
 			g_showingCamera = (g_showingCamera + 1) % g_Scene->GetCameraCount();
 			g_Scene->SwitchCamera(g_showingCamera);
+			break;
+		case GLFW_KEY_P:
+			int width, height;
+			glfwGetFramebufferSize(_window, &width, &height);
+			g_Scene->resizeWindowScene(width, height);
 			break;
 
 		default:

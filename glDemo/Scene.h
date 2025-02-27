@@ -49,6 +49,8 @@ public:
 
 	void SwitchCamera(int cameraIndex);
 
+	void resizeWindowScene(int _width, int _height);
+
 	int GetCameraCount() const { return static_cast<int>(m_Cameras.size()); }
 
 

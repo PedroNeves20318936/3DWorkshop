@@ -5,12 +5,28 @@
 #include "stringHelp.h"
 
 using namespace std;
+using namespace glm;
 
 /////////////////////////////////////////////////////////////////////////////////////
 // constructor
 /////////////////////////////////////////////////////////////////////////////////////
 Camera::Camera()
 {
+	m_theta = 0.0f;
+	m_phi = 0.0f;
+	m_radius = 15.0f;
+
+	m_fovY = 55.0f;
+	m_aspect = 1.0f;
+	m_near = 0.1f;
+	m_far = 500.0f;
+
+	//F = ViewFrustum(55.0f, 1.0f, 0.1f, 500.0f);
+
+	// calculate derived values
+	calculateDerivedValues();
+	//F.calculateWorldCoordPlanes(C, R);
+
 	m_type = "CAMERA";
 }
 
@@ -66,4 +82,24 @@ void Camera::SetRenderValues(unsigned int _prog)
 	//the current camera is at this position
 	if (Helper::SetUniformLocation(_prog, "camPos", &loc))
 		glUniform3fv(loc, 1, glm::value_ptr(GetPos()));
+}
+
+float Camera::getAspect() {
+
+	return m_aspect;
+}
+
+void Camera::setAspect(float _aspect) {
+
+	this->m_aspect = _aspect;
+	calculateDerivedValues();
+}
+
+void Camera::calculateDerivedValues()
+{
+	const float theta_ = glm::radians<float>(m_theta);
+	const float phi_ = glm::radians<float>(m_phi);
+
+	m_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -m_radius)) * glm::eulerAngleX(-theta_) * glm::eulerAngleY(-phi_);
+	m_projectionMatrix = glm::perspective(glm::radians<float>(m_fovY), m_aspect, m_near, m_far);
 }

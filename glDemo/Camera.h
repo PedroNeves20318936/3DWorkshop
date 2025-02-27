@@ -60,6 +60,12 @@ public:
 	//set up shader values for when using this camera
 	virtual void SetRenderValues(unsigned int _prog);
 
+	void calculateDerivedValues();
+
+	float getAspect();
+
+	void setAspect(float _aspect);
+
 protected:
 
 	//standard transforms needed to render with this a basic camera
@@ -72,6 +78,11 @@ protected:
 	//Location this camera is looking at
 	glm::vec3 m_lookAt;
 
+	float m_aspect;
+	float m_theta;
+	float m_phi;
+	float m_fovY;
+	float m_radius;
 	float m_fov; //field of view
 	float m_near;//near plane distance
 	float m_far;//far plane distance
