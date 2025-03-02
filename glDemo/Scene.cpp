@@ -349,6 +349,7 @@ void Scene::SwitchCamera(int cameraIndex)
 	std::advance(it, cameraIndex);
 
 	m_useCamera = *it;
+	cout << "Switching to: " << m_useCamera->GetName() << endl;
 }
 
 
