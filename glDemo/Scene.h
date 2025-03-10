@@ -53,6 +53,8 @@ public:
 
 	int GetCameraCount() const { return static_cast<int>(m_Cameras.size()); }
 
+	Camera* GetActiveCamera();
+
 
 protected:
 

@@ -44,6 +44,7 @@ ArcballCamera::ArcballCamera() {
 	m_nearPlane = 0.1f;
 	m_farPlane = 500.0f;
 
+	m_type = "ARCBALLCAMERA";
 	//F = ViewFrustum(55.0f, 1.0f, 0.1f, 500.0f);
 
 	// calculate derived values

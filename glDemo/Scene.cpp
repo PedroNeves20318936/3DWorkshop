@@ -374,3 +374,8 @@ void Scene::resizeWindowScene(int _width, int _height)
 	glViewport(0, 0, _width, _height);
 }
 
+Camera* Scene::GetActiveCamera()
+{
+	return m_useCamera;
+}
+

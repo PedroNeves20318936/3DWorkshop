@@ -29,6 +29,7 @@ public:
 	//various getters and setters
 	void SetName(string _name) { m_name = _name; }
 	string GetName() { return m_name; }
+	vec3 GetPosition() { return m_pos; }
 	GLuint GetShaderProg() { return m_ShaderProg; }
 
 	//scene maybe needed for more involved cameras to connect to relvant GOs and lights/shaders etc

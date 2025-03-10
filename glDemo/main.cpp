@@ -25,7 +25,7 @@ double				g_prevMouseX, g_prevMouseY;
 
 // Global Example objects
 // shouldn't really be anything in here for the final submission
-ArcballCamera* g_mainCamera = nullptr;
+//ArcballCamera* g_mainCamera = nullptr;
 CGPrincipleAxes* g_principleAxes = nullptr;
 Cube* g_cube = nullptr;
 
@@ -52,6 +52,10 @@ Scene* g_Scene = nullptr;
 // Window size
 const unsigned int g_initWidth = 512;
 const unsigned int g_initHeight = 512;
+
+mat4 cameraTransform;
+mat4 cameraProjection;
+mat4 cameraView;
 
 #pragma endregion
 
@@ -135,7 +139,7 @@ int main()
 	g_texDirLightShader = setupShaders(string("Assets\\Shaders\\texture-directional.vert"), string("Assets\\Shaders\\texture-directional.frag"));
 	g_flatColourShader = setupShaders(string("Assets\\Shaders\\flatColour.vert"), string("Assets\\Shaders\\flatColour.frag"));
 
-	g_mainCamera = new ArcballCamera(0.0f, 0.0f, 1.98595f, 55.0f, 1.0f, 0.1f, 500.0f);
+	//g_mainCamera = new ArcballCamera(0.0f, 0.0f, 1.98595f, 55.0f, 1.0f, 0.1f, 500.0f);
 
 	g_principleAxes = new CGPrincipleAxes();
 
@@ -207,10 +211,28 @@ void renderScene()
 	// Clear the rendering window
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	mat4 cameraTransform = g_mainCamera->projectionTransform() * g_mainCamera->viewTransform();
+	if (g_Scene)
+	{
+		Camera* activeCamera = g_Scene->GetActiveCamera();
 
-	mat4 cameraProjection = g_mainCamera->projectionTransform();
-	mat4 cameraView = g_mainCamera->viewTransform() * translate(identity<mat4>(), -g_beastPos);
+		if (activeCamera)
+		{
+			std::string camType = activeCamera->GetType();
+
+			if (camType == "ARCBALLCAMERA")
+			{
+				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(activeCamera);
+				if (arcballCam)
+				{
+					cameraTransform = arcballCam->projectionTransform() * arcballCam->viewTransform();
+
+					cameraProjection = arcballCam->projectionTransform();
+					cameraView = arcballCam->viewTransform() * translate(identity<mat4>(), -g_beastPos);
+				}
+			}
+		}
+	}
+
 
 #// Render principle axes - no modelling transforms so just use cameraTransform
 	if (true)
@@ -226,13 +248,33 @@ void renderScene()
 		mat4 modelTransform = identity<mat4>();
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
 
-		g_principleAxes->render();
 	}
 
 	switch (g_showing)
 	{
 	case 0:
 	{
+		g_Scene->Render();
+	}
+	break;
+
+	case 1:
+	{
+		// Render cube 
+		glUseProgram(g_flatColourShader);
+		GLint pLocation;
+		Helper::SetUniformLocation(g_flatColourShader, "viewMatrix", &pLocation);
+		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraView);
+		Helper::SetUniformLocation(g_flatColourShader, "projMatrix", &pLocation);
+		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraProjection);
+		Helper::SetUniformLocation(g_flatColourShader, "modelMatrix", &pLocation);
+		mat4 modelTransform = glm::translate(identity<mat4>(), vec3(2.0, 0.0, 0.0));
+		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
+
+		g_cube->render();
+		break;
+	}
+	case 2:
 		glUseProgram(g_texDirLightShader);
 
 		GLint pLocation;
@@ -280,27 +322,7 @@ void renderScene()
 			g_duckMesh->setupTextures();
 			g_duckMesh->render();
 		}
-	}
-	break;
-
-	case 1:
-	{
-		// Render cube 
-		glUseProgram(g_flatColourShader);
-		GLint pLocation;
-		Helper::SetUniformLocation(g_flatColourShader, "viewMatrix", &pLocation);
-		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraView);
-		Helper::SetUniformLocation(g_flatColourShader, "projMatrix", &pLocation);
-		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraProjection);
-		Helper::SetUniformLocation(g_flatColourShader, "modelMatrix", &pLocation);
-		mat4 modelTransform = glm::translate(identity<mat4>(), vec3(2.0, 0.0, 0.0));
-		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
-
-		g_cube->render();
-		break;
-	}
-	case 2:
-		g_Scene->Render();
+		g_principleAxes->render();
 	}
 
 }
@@ -328,10 +350,6 @@ void updateScene()
 // Function to call when window resized
 void resizeWindow(GLFWwindow* _window, int _width, int _height)
 {
-	if (g_mainCamera) {
-		g_mainCamera->setAspect((float)_width / (float)_height);
-	}
-
 	glViewport(0, 0, _width, _height); // Draw into the entire window
 
 	// Automatically update scene when window is resized
@@ -357,6 +375,7 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 		case GLFW_KEY_SPACE:
 			g_showing++;
 			g_showing = g_showing % g_NumExamples;
+			break;
 
 		case GLFW_KEY_C:
 			g_showingCamera = (g_showingCamera + 1) % g_Scene->GetCameraCount();
@@ -388,18 +407,34 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 
 void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos) 
 {
-	if (g_mouseDown) {
+	if (g_Scene) 
+	{
+		Camera* activeCamera = g_Scene->GetActiveCamera();
 
-		//float tDelta = gameClock->gameTimeDelta();
+		if (activeCamera)
+		{
+			std::string camType = activeCamera->GetType();
 
-		float dx = float(_xpos - g_prevMouseX);// *360.0f * tDelta;
-		float dy = float(_ypos - g_prevMouseY);// *360.0f * tDelta;
+			if (camType == "ARCBALLCAMERA")
+			{
+				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(activeCamera);
+				if (arcballCam)
+				{
+					if (g_mouseDown) 
+					{
+						cout << "Should Move" << endl;
+						float dx = float(_xpos - g_prevMouseX);
+						float dy = float(_ypos - g_prevMouseY);
 
-		if (g_mainCamera)
-			g_mainCamera->rotateCamera(-dy, -dx);
+						if (arcballCam)
+							arcballCam->rotateCamera(-dy, -dx);
 
-		g_prevMouseX = _xpos;
-		g_prevMouseY = _ypos;
+						g_prevMouseX = _xpos;
+						g_prevMouseY = _ypos;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -419,16 +454,33 @@ void mouseButtonHandler(GLFWwindow* _window, int _button, int _action, int _mods
 	}
 }
 
-void mouseScrollHandler(GLFWwindow* _window, double _xoffset, double _yoffset) {
-
-	if (g_mainCamera) 
+void mouseScrollHandler(GLFWwindow* _window, double _xoffset, double _yoffset)
+{
+	if (g_Scene)
 	{
-		if (_yoffset < 0.0)
-			g_mainCamera->scaleRadius(1.1f);
-		else if (_yoffset > 0.0)
-			g_mainCamera->scaleRadius(0.9f);
+		Camera* activeCamera = g_Scene->GetActiveCamera();
+
+		if (activeCamera)
+		{
+			std::string camType = activeCamera->GetType();
+
+			if (camType == "ARCBALLCAMERA")
+			{
+				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(activeCamera);
+				if (arcballCam)
+				{
+					cout << "Should Zoom" << endl;
+
+					if (_yoffset < 0.0)
+						arcballCam->scaleRadius(1.1f);
+					else if (_yoffset > 0.0)
+						arcballCam->scaleRadius(0.9f);
+				}
+			}
+		}
 	}
 }
+
 
 void mouseEnterHandler(GLFWwindow* _window, int _entered) 
 {
