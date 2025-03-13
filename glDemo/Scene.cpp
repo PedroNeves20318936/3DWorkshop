@@ -379,7 +379,17 @@ void Scene::resizeWindowScene(int _width, int _height)
 
 	for (Camera* cam : m_Cameras)
 	{
-		cam->setAspect(newAspect);
+		cam->setAspect(newAspect);  // Generic set aspect (existing logic)
+
+		// Special handling for ArcballCamera:
+		if (cam->GetType() == "ARCBALLCAMERA")
+		{
+			ArcballCamera* arcCam = dynamic_cast<ArcballCamera*>(cam);
+			if (arcCam)
+			{
+				arcCam->setAspect(newAspect);
+			}
+		}
 	}
 
 	glViewport(0, 0, _width, _height);
