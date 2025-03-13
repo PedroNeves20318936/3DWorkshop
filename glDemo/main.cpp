@@ -248,6 +248,7 @@ void renderScene()
 		mat4 modelTransform = identity<mat4>();
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
 
+		g_principleAxes->render();
 	}
 
 	switch (g_showing)
@@ -290,6 +291,7 @@ void renderScene()
 		glUniform3fv(pLocation, 1, (GLfloat*)&g_DLcolour);
 		Helper::SetUniformLocation(g_texDirLightShader, "DIRAmb", &pLocation);
 		glUniform3fv(pLocation, 1, (GLfloat*)&g_DLambient);
+		
 		if (g_creatureMesh) {
 
 			// Setup transforms
@@ -322,7 +324,7 @@ void renderScene()
 			g_duckMesh->setupTextures();
 			g_duckMesh->render();
 		}
-		g_principleAxes->render();
+		
 	}
 
 }
@@ -422,7 +424,6 @@ void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos)
 				{
 					if (g_mouseDown) 
 					{
-						cout << "Should Move" << endl;
 						float dx = float(_xpos - g_prevMouseX);
 						float dy = float(_ypos - g_prevMouseY);
 
@@ -469,7 +470,6 @@ void mouseScrollHandler(GLFWwindow* _window, double _xoffset, double _yoffset)
 				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(activeCamera);
 				if (arcballCam)
 				{
-					cout << "Should Zoom" << endl;
 
 					if (_yoffset < 0.0)
 						arcballCam->scaleRadius(1.1f);

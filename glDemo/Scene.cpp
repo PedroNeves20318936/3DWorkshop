@@ -10,6 +10,8 @@
 #include "Shader.h"
 #include "GameObjectFactory.h"
 #include <assert.h>
+#include <ArcballCamera.h>
+#include <helper.h>
 
 Scene::Scene()
 {
@@ -134,35 +136,44 @@ Shader* Scene::GetShader(string _shaderName)
 }
 
 
-//Render Everything
 void Scene::Render()
 {
-	//TODO: Set up for the Opaque Render Pass will go here
-	//check out the example stuff back in main.cpp to see what needs setting up here
 	for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
 	{
-		if ((*it)->GetRP() & RP_OPAQUE)// TODO: note the bit-wise operation. Why?
+		if ((*it)->GetRP() & RP_OPAQUE)
 		{
-			//set shader program using
 			GLuint SP = (*it)->GetShaderProg();
 			glUseProgram(SP);
 
-			//set up for uniform shader values for current camera
 			m_useCamera->SetRenderValues(SP);
-
-			//loop through setting up uniform shader values for anything else
 			SetShaderUniforms(SP);
 
-			//set any uniform shader values for the actual model
-			(*it)->PreRender();
+			if (m_useCamera && m_useCamera->GetType() == "ARCBALLCAMERA")
+			{
+				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
+				if (arcballCam)
+				{
+					glm::mat4 projectionMatrix = arcballCam->projectionTransform();
+					glm::mat4 viewMatrix = arcballCam->viewTransform();
 
-			//actually render the GameObject
+					GLint pLocation;
+					Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&viewMatrix);
+
+					Helper::SetUniformLocation(SP, "projMatrix", &pLocation);
+					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&projectionMatrix);
+				}
+			}
+
+			(*it)->PreRender();
 			(*it)->Render();
 		}
 	}
-
-	//TODO: now do the same for RP_TRANSPARENT here
 }
+
+
+	// Your RP_TRANSPARENT logic here (
+
 
 void Scene::SetShaderUniforms(GLuint _shaderprog)
 {

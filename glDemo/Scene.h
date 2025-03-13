@@ -55,6 +55,9 @@ public:
 
 	Camera* GetActiveCamera();
 
+	glm::mat4 projectionMatrix;  // default identity
+	glm::mat4 viewMatrix;
+
 
 protected:
 
