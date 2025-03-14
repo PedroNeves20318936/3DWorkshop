@@ -1,8 +1,10 @@
 #pragma once
 
 #include "core.h"
+#include "GameObject.h"
+#include "Model.h"
 
-class Cube {
+class Cube : public GameObject, public Model {
 
 private:
 

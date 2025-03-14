@@ -117,6 +117,9 @@
     <ClInclude Include="DirectionLight.h">
       <Filter>Scene Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CubeModel.h">
+      <Filter>Scene Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -186,6 +189,15 @@
       <Filter>Scene Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DirectionLight.cpp">
+      <Filter>Scene Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeModel.cpp">
+      <Filter>Scene Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleInternal.h">
+      <Filter>Scene Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleInternal.cpp">
       <Filter>Scene Source Files</Filter>
     </ClCompile>
   </ItemGroup>

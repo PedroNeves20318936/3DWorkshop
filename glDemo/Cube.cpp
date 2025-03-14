@@ -3,7 +3,6 @@
 using namespace std;
 using namespace glm;
 
-// Separate vertices for each face to avoid color interpolation
 static float positionArray[] = {
     -1.0f,  1.0f, -1.0f, 1.0f,
      1.0f,  1.0f, -1.0f, 1.0f,
@@ -36,7 +35,6 @@ static float positionArray[] = {
      1.0f,  1.0f, -1.0f, 1.0f
 };
 
-// One color per face
 static float colourArray[] = {
     1.0f, 0.0f, 0.0f, 1.0f,
     1.0f, 0.0f, 0.0f, 1.0f,
@@ -69,7 +67,6 @@ static float colourArray[] = {
     0.0f, 1.0f, 1.0f, 1.0f
 };
 
-// Updated index buffer
 static unsigned int indexArray[] = {
     0, 3, 2,  2, 1, 0,
     4, 5, 6,  6, 7, 4,

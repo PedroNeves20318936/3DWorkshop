@@ -1,6 +1,7 @@
 #include "ModelFactory.h"
 #include <assert.h>
 #include "AIModel.h"
+#include "CubeModel.h"
 
 Model* ModelFactory::makeNewModel(std::string _type)
 {
@@ -10,6 +11,10 @@ Model* ModelFactory::makeNewModel(std::string _type)
 	if (_type == "AI")
 	{
 		return new AIModel();
+	}
+	if (_type == "CUBE")
+	{
+		return new CubeModel();
 	}
 	else
 	{

@@ -355,7 +355,6 @@ void Scene::SwitchCamera(int cameraIndex)
 {
 	cameraIndex = cameraIndex % m_Cameras.size();
 
-	// Get the iterator to the new camera
 	auto it = m_Cameras.begin();
 	std::advance(it, cameraIndex);
 
@@ -379,9 +378,8 @@ void Scene::resizeWindowScene(int _width, int _height)
 
 	for (Camera* cam : m_Cameras)
 	{
-		cam->setAspect(newAspect);  // Generic set aspect (existing logic)
+		cam->setAspect(newAspect); 
 
-		// Special handling for ArcballCamera:
 		if (cam->GetType() == "ARCBALLCAMERA")
 		{
 			ArcballCamera* arcCam = dynamic_cast<ArcballCamera*>(cam);
