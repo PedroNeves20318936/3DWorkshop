@@ -1,7 +1,8 @@
 #include "ModelFactory.h"
 #include <assert.h>
 #include "AIModel.h"
-#include "CubeModel.h"
+#include "Cube.h"
+#include "PrincipleAxes.h"
 
 Model* ModelFactory::makeNewModel(std::string _type)
 {
@@ -12,9 +13,13 @@ Model* ModelFactory::makeNewModel(std::string _type)
 	{
 		return new AIModel();
 	}
-	if (_type == "CUBE")
+	else if (_type == "CUBE")
 	{
-		return new CubeModel();
+		return new Cube();
+	}
+	else if (_type == "AXES")
+	{
+		return new CGPrincipleAxes();
 	}
 	else
 	{

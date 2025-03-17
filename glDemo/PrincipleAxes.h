@@ -1,10 +1,10 @@
 #pragma once
 
 #include "core.h"
+#include "GameObject.h"
+#include "Model.h"
 
-
-
-class CGPrincipleAxes  {
+class CGPrincipleAxes : public GameObject, public Model {
 
 private:
 
@@ -19,6 +19,8 @@ public:
 
 	CGPrincipleAxes();
 	~CGPrincipleAxes();
+
+	virtual void Render() override;
 
 	void render(bool _showZAxis = true);
 };

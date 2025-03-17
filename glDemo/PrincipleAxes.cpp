@@ -115,6 +115,12 @@ CGPrincipleAxes::~CGPrincipleAxes() {
 	glDeleteBuffers(1, &m_indexBuffer);
 }
 
+void CGPrincipleAxes::Render() 
+{
+	// Podes definir o valor padrão para _showZAxis conforme desejado.
+	render(true);
+}
+
 
 void CGPrincipleAxes::render(bool _showZAxis) {
 	glBindVertexArray(m_vao);

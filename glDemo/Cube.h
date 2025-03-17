@@ -20,5 +20,5 @@ public:
 	Cube();
 	~Cube();
 
-	void render();
+	virtual void Render() override;
 };

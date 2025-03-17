@@ -3,7 +3,7 @@
 #include "TextureLoader.h"
 #include "ArcballCamera.h"
 #include "GUClock.h"
-#include "PrincipleAxes.h"
+//#include "PrincipleAxes.h"
 #include "shader_setup.h"
 #include "helper.h"
 #include "AIMesh.h"
@@ -26,7 +26,7 @@ double				g_prevMouseX, g_prevMouseY;
 // Global Example objects
 // shouldn't really be anything in here for the final submission
 //ArcballCamera* g_mainCamera = nullptr;
-CGPrincipleAxes* g_principleAxes = nullptr;
+//CGPrincipleAxes* g_principleAxes = nullptr;
 Cube* g_cube = nullptr;
 
 GLuint g_flatColourShader;
@@ -42,7 +42,7 @@ float g_beastRotation = 0.0f;
 AIMesh* g_planetMesh = nullptr;
 AIMesh* g_duckMesh = nullptr;
 
-int g_showing = 0;
+//int g_showing = 0;
 int g_showingCamera = 0;
 int g_NumExamples = 3;
 
@@ -141,7 +141,7 @@ int main()
 
 	//g_mainCamera = new ArcballCamera(0.0f, 0.0f, 1.98595f, 55.0f, 1.0f, 0.1f, 500.0f);
 
-	g_principleAxes = new CGPrincipleAxes();
+	//g_principleAxes = new CGPrincipleAxes();
 
 	g_cube = new Cube();
 
@@ -238,7 +238,7 @@ void renderScene()
 	if (true)
 	{
 		// Render axes 
-		glUseProgram(g_flatColourShader);
+		/*glUseProgram(g_flatColourShader);
 		GLint pLocation;
 		Helper::SetUniformLocation(g_flatColourShader, "viewMatrix", &pLocation);
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&cameraView);
@@ -248,10 +248,11 @@ void renderScene()
 		mat4 modelTransform = identity<mat4>();
 		glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&modelTransform);
 
-		g_principleAxes->render();
+		g_principleAxes->render();*/
+		g_Scene->Render();
 	}
 
-	switch (g_showing)
+	/*switch (g_showing)
 	{
 	case 0:
 	{
@@ -325,7 +326,7 @@ void renderScene()
 			g_duckMesh->render();
 		}
 		
-	}
+	}*/
 
 }
 
@@ -374,10 +375,10 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			glfwSetWindowShouldClose(_window, true);
 			break;
 
-		case GLFW_KEY_SPACE:
+		/*case GLFW_KEY_SPACE:
 			g_showing++;
 			g_showing = g_showing % g_NumExamples;
-			break;
+			break;*/
 
 		case GLFW_KEY_C:
 			g_showingCamera = (g_showingCamera + 1) % g_Scene->GetCameraCount();

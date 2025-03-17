@@ -12,7 +12,7 @@ Camera* CameraFactory::makeNewCam(string _type)
 	{
 		return new Camera();
 	}
-	if (_type == "ARCCAMERA")
+	else if (_type == "ARCCAMERA")
 	{
 		return new ArcballCamera();
 	}

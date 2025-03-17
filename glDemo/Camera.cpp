@@ -12,10 +12,6 @@ using namespace glm;
 /////////////////////////////////////////////////////////////////////////////////////
 Camera::Camera()
 {
-	m_theta = 0.0f;
-	m_phi = 0.0f;
-	m_radius = 15.0f;
-
 	m_fovY = 55.0f;
 	m_aspect = 1.0f;
 	m_near = 0.1f;
@@ -97,9 +93,5 @@ void Camera::setAspect(float _aspect) {
 
 void Camera::calculateDerivedValues()
 {
-	const float theta_ = glm::radians<float>(m_theta);
-	const float phi_ = glm::radians<float>(m_phi);
-
-	m_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -m_radius)) * glm::eulerAngleX(-theta_) * glm::eulerAngleY(-phi_);
 	m_projectionMatrix = glm::perspective(glm::radians<float>(m_fovY), m_aspect, m_near, m_far);
 }
