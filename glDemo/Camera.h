@@ -66,6 +66,14 @@ public:
 
 	void setAspect(float _aspect);
 
+	virtual void UpdateAspectRatio(float newAspect) {
+		setAspect(newAspect);
+	}
+
+	virtual glm::mat4 GetProjectionMatrix() { return m_projectionMatrix; }
+	virtual glm::mat4 GetViewMatrix() { return m_viewMatrix; }
+
+
 protected:
 
 	//standard transforms needed to render with this a basic camera

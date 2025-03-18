@@ -120,6 +120,9 @@
     <ClInclude Include="InternalGameObj.h">
       <Filter>Scene Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FPSCam.h">
+      <Filter>Example Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -199,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="InternalGameObj.cpp">
       <Filter>Scene Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSCam.cpp">
+      <Filter>Example Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -148,28 +148,22 @@ void Scene::Render()
 			m_useCamera->SetRenderValues(SP);
 			SetShaderUniforms(SP);
 
-			if (m_useCamera && m_useCamera->GetType() == "ARCBALLCAMERA")
-			{
-				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(m_useCamera);
-				if (arcballCam)
-				{
-					glm::mat4 projectionMatrix = arcballCam->projectionTransform();
-					glm::mat4 viewMatrix = arcballCam->viewTransform();
+			glm::mat4 projectionMatrix = m_useCamera->GetProjectionMatrix();
+			glm::mat4 viewMatrix = m_useCamera->GetViewMatrix();
 
-					GLint pLocation;
-					Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
-					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&viewMatrix);
+			GLint pLocation;
+			Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
+			glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 
-					Helper::SetUniformLocation(SP, "projMatrix", &pLocation);
-					glUniformMatrix4fv(pLocation, 1, GL_FALSE, (GLfloat*)&projectionMatrix);
-				}
-			}
+			Helper::SetUniformLocation(SP, "projMatrix", &pLocation);
+			glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
 			(*it)->PreRender();
 			(*it)->Render();
 		}
 	}
 }
+
 
 
 	// Your RP_TRANSPARENT logic here (
@@ -378,16 +372,7 @@ void Scene::resizeWindowScene(int _width, int _height)
 
 	for (Camera* cam : m_Cameras)
 	{
-		cam->setAspect(newAspect); 
-
-		if (cam->GetType() == "ARCBALLCAMERA")
-		{
-			ArcballCamera* arcCam = dynamic_cast<ArcballCamera*>(cam);
-			if (arcCam)
-			{
-				arcCam->setAspect(newAspect);
-			}
-		}
+		cam->UpdateAspectRatio(newAspect);
 	}
 
 	glViewport(0, 0, _width, _height);

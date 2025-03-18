@@ -142,6 +142,7 @@
     <ClInclude Include="ArcballCamera.h" />
     <ClInclude Include="CameraFactory.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="FPSCam.h" />
     <ClInclude Include="InternalGameObj.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="core.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ExampleInternal.cpp" />
     <ClCompile Include="ExampleInternal.h" />
+    <ClCompile Include="FPSCam.cpp" />
     <ClCompile Include="InternalGameObj.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="core.cpp" />
