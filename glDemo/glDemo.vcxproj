@@ -141,6 +141,7 @@
     <ClInclude Include="ArcballCamera.h" />
     <ClInclude Include="CameraFactory.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="InternalGameObj.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="Cube.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ExampleInternal.cpp" />
     <ClCompile Include="ExampleInternal.h" />
+    <ClCompile Include="InternalGameObj.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="core.cpp" />
     <ClCompile Include="Cube.cpp" />
@@ -201,6 +203,8 @@
     <None Include="Assets\Shaders\flatColour.vert" />
     <None Include="Assets\Shaders\texture-directional.frag" />
     <None Include="Assets\Shaders\texture-directional.vert" />
+    <None Include="Assets\Shaders\texture-full.frag" />
+    <None Include="Assets\Shaders\texture-full.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

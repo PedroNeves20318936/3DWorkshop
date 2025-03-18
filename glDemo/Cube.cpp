@@ -77,47 +77,12 @@ static unsigned int indexArray[] = {
 };
 
 
-Cube::Cube() {
 
-    m_numFaces = 6 * 2;
-
-    glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
-
-    // Setup VBO for position attribute
-    glGenBuffers(1, &m_vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(positionArray), positionArray, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0);
-    glEnableVertexAttribArray(0);
-
-    // Setup VBO for color attribute
-    glGenBuffers(1, &m_colourBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, m_colourBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colourArray), colourArray, GL_STATIC_DRAW);
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0);
-    glEnableVertexAttribArray(4);
-
-    // Setup VBO for index buffer
-    glGenBuffers(1, &m_indexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexArray), indexArray, GL_STATIC_DRAW);
-
-    glBindVertexArray(0);
+Cube::Cube()
+    : InternalGameObj(positionArray, sizeof(positionArray),
+        colourArray, sizeof(colourArray),
+        indexArray, sizeof(indexArray),
+        6 * 2) {
 }
 
-
-Cube::~Cube() {
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    glDeleteBuffers(1, &m_vertexBuffer);
-    glDeleteBuffers(1, &m_colourBuffer);
-    glDeleteBuffers(1, &m_indexBuffer);
-}
-
-
-void Cube::Render() {
-    glBindVertexArray(m_vao);
-    glDrawElements(GL_TRIANGLES, m_numFaces * 3, GL_UNSIGNED_INT, (const GLvoid*)0);
-}
+Cube::~Cube() {}

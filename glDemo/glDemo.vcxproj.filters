@@ -117,6 +117,9 @@
     <ClInclude Include="DirectionLight.h">
       <Filter>Scene Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InternalGameObj.h">
+      <Filter>Scene Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -194,6 +197,9 @@
     <ClCompile Include="ExampleInternal.cpp">
       <Filter>Scene Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InternalGameObj.cpp">
+      <Filter>Scene Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="manifest.txt">
@@ -213,5 +219,7 @@
     <None Include="Assets\Shaders\flatColour.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Assets\Shaders\texture-full.vert" />
+    <None Include="Assets\Shaders\texture-full.frag" />
   </ItemGroup>
 </Project>

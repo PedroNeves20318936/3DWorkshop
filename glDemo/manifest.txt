@@ -74,7 +74,7 @@ AMB: 0.2 0.2 0.2
 DIR: 0.0 1.0 0.0
 }
 
-MODELS 5
+MODELS 6
 {
 TYPE: AI
 NAME: BEAST
@@ -98,8 +98,13 @@ NAME: CUBE
 TYPE: AXES
 NAME: AXES
 }
+{
+TYPE: AI
+NAME: SKYBOX
+FILE: Assets\\skybox.obj
+}
 
-TEXTURES 6
+TEXTURES 7
 {
 TYPE: FIF_BMP
 NAME: BEAST
@@ -130,8 +135,13 @@ TYPE: FIF_JPEG
 NAME: DUCK
 FILE: Assets\\duck\\rubber_duck_toy_diff_4k.jpg
 }
+{
+TYPE: FIF_JPEG
+NAME: SKYBOX
+FILE: Assets\\Textures\\Skybox.jpg
+}
 
-SHADERS 2
+SHADERS 3
 {
 NAME: FLAT
 VERTFILE: Assets\\Shaders\\flatColour.vert
@@ -142,8 +152,13 @@ NAME: TEXDIR
 VERTFILE: Assets\\Shaders\\texture-directional.vert
 FRAGFILE: Assets\\Shaders\\texture-directional.frag
 }
+{
+NAME: TEXFULL
+VERTFILE: Assets\\Shaders\\texture-full.vert
+FRAGFILE: Assets\\Shaders\\texture-full.frag
+}
 
-GAMEOBJECTS 5
+GAMEOBJECTS 6
 {
 TYPE: EXAMPLE
 NAME: BEAST
@@ -196,4 +211,15 @@ SCALE: 1.0 1.0 1.0
 ROTINC: 0.0 0.0 0.0
 MODEL: AXES
 SHADER: FLAT
+}
+{
+TYPE: EXAMPLE
+NAME: SKYBOX
+POS: 0.0 0.0 0.0
+ROT: 0.0 0.0 0.0 
+SCALE: 200.0 200.0 200.0
+ROTINC: 0.0 0.0 0.0
+MODEL: SKYBOX
+TEXTURE: SKYBOX
+SHADER: TEXFULL
 }

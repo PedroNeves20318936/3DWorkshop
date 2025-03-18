@@ -74,50 +74,18 @@ static unsigned int indexArray[] = {
 
 
 
-CGPrincipleAxes::CGPrincipleAxes() {
-
-
-	m_numFaces = 10;
-
-	glGenVertexArrays(1, &m_vao);
-	glBindVertexArray(m_vao);
-
-	// setup vbo for position attribute
-	glGenBuffers(1, &m_vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 72 * sizeof(float), positionArray, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-	// setup vbo for colour attribute
-	glGenBuffers(1, &m_colourBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, m_colourBuffer);
-	glBufferData(GL_ARRAY_BUFFER, 72 * sizeof(float), colourArray, GL_STATIC_DRAW);
-	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0);
-	glEnableVertexAttribArray(4);
-
-	// setup vbo for cube) index buffer
-	glGenBuffers(1, &m_indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 20 * sizeof(unsigned int), indexArray, GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
+CGPrincipleAxes::CGPrincipleAxes() 
+	: InternalGameObj(positionArray, sizeof(positionArray),
+		colourArray, sizeof(colourArray),
+		indexArray, sizeof(indexArray),
+		10) {
 }
 
 
-CGPrincipleAxes::~CGPrincipleAxes() {
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glDeleteBuffers(1, &m_vertexBuffer);
-	glDeleteBuffers(1, &m_colourBuffer);
-	glDeleteBuffers(1, &m_indexBuffer);
-}
+CGPrincipleAxes::~CGPrincipleAxes() {}
 
 void CGPrincipleAxes::Render() 
 {
-	// Podes definir o valor padrão para _showZAxis conforme desejado.
 	render(true);
 }
 

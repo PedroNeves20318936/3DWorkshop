@@ -1,20 +1,8 @@
 #pragma once
 
-#include "core.h"
-#include "GameObject.h"
-#include "Model.h"
+#include "InternalGameObj.h"
 
-class CGPrincipleAxes : public GameObject, public Model {
-
-private:
-
-	GLuint				m_numFaces = 0;
-	GLuint				m_vao = 0;
-
-	GLuint				m_vertexBuffer;
-	GLuint				m_colourBuffer;
-	GLuint				m_indexBuffer;
-
+class CGPrincipleAxes : public InternalGameObj {
 public:
 
 	CGPrincipleAxes();

@@ -1,24 +1,9 @@
 #pragma once
 
-#include "core.h"
-#include "GameObject.h"
-#include "Model.h"
+#include "InternalGameObj.h"
 
-class Cube : public GameObject, public Model {
-
-private:
-
-	GLuint				m_numFaces = 0;
-	GLuint				m_vao = 0;
-
-	GLuint				m_vertexBuffer;
-	GLuint				m_colourBuffer;
-	GLuint				m_indexBuffer;
-
+class Cube : public InternalGameObj {
 public:
-
-	Cube();
-	~Cube();
-
-	virtual void Render() override;
+    Cube();
+    ~Cube();
 };
