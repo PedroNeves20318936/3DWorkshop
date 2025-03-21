@@ -58,6 +58,14 @@ public:
 	// return the pivot rotation around the y axis (phi) in degrees
 	float getPhi(); 
 
+	void Rotate(float dTheta, float dPhi) override {
+		rotateCamera(dTheta, dPhi);
+	}
+
+	void Scale(float scaleFactor) override {
+		scaleRadius(scaleFactor);
+	}
+
 	// rotate by angles dTheta, dPhi given in degrees
 	void rotateCamera(float _dTheta, float _dPhi);
 

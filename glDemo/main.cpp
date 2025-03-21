@@ -50,8 +50,8 @@ int g_NumExamples = 3;
 Scene* g_Scene = nullptr;
 
 // Window size
-const unsigned int g_initWidth = 512;
-const unsigned int g_initHeight = 512;
+const unsigned int g_initWidth = 2560;
+const unsigned int g_initHeight = 1440;
 
 mat4 cameraTransform;
 mat4 cameraProjection;
@@ -211,7 +211,7 @@ void renderScene()
 	// Clear the rendering window
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if (g_Scene)
+	/*if (g_Scene)
 	{
 		Camera* activeCamera = g_Scene->GetActiveCamera();
 
@@ -231,7 +231,7 @@ void renderScene()
 				}
 			}
 		}
-	}
+	}*/
 
 
 #// Render principle axes - no modelling transforms so just use cameraTransform
@@ -408,37 +408,25 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 }
 
 
-void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos) 
+void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos)
 {
-	if (g_Scene) 
+	if (g_Scene)
 	{
 		Camera* activeCamera = g_Scene->GetActiveCamera();
 
-		if (activeCamera)
+		if (activeCamera && g_mouseDown)
 		{
-			std::string camType = activeCamera->GetType();
+			float dx = float(_xpos - g_prevMouseX);
+			float dy = float(_ypos - g_prevMouseY);
 
-			if (camType == "ARCBALLCAMERA")
-			{
-				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(activeCamera);
-				if (arcballCam)
-				{
-					if (g_mouseDown) 
-					{
-						float dx = float(_xpos - g_prevMouseX);
-						float dy = float(_ypos - g_prevMouseY);
+			activeCamera->Rotate(-dy, -dx);
 
-						if (arcballCam)
-							arcballCam->rotateCamera(-dy, -dx);
-
-						g_prevMouseX = _xpos;
-						g_prevMouseY = _ypos;
-					}
-				}
-			}
+			g_prevMouseX = _xpos;
+			g_prevMouseY = _ypos;
 		}
 	}
 }
+
 
 void mouseButtonHandler(GLFWwindow* _window, int _button, int _action, int _mods) 
 {
@@ -464,24 +452,13 @@ void mouseScrollHandler(GLFWwindow* _window, double _xoffset, double _yoffset)
 
 		if (activeCamera)
 		{
-			std::string camType = activeCamera->GetType();
-
-			if (camType == "ARCBALLCAMERA")
-			{
-				ArcballCamera* arcballCam = dynamic_cast<ArcballCamera*>(activeCamera);
-				if (arcballCam)
-				{
-
-					if (_yoffset < 0.0)
-						arcballCam->scaleRadius(1.1f);
-					else if (_yoffset > 0.0)
-						arcballCam->scaleRadius(0.9f);
-				}
-			}
+			if (_yoffset < 0.0)
+				activeCamera->Scale(1.1f);
+			else if (_yoffset > 0.0)
+				activeCamera->Scale(0.9f);
 		}
 	}
 }
-
 
 void mouseEnterHandler(GLFWwindow* _window, int _entered) 
 {

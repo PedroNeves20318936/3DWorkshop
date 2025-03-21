@@ -73,6 +73,10 @@ public:
 	virtual glm::mat4 GetProjectionMatrix() { return m_projectionMatrix; }
 	virtual glm::mat4 GetViewMatrix() { return m_viewMatrix; }
 
+	virtual void Rotate(float dTheta, float dPhi) {}
+
+	virtual void Scale(float scaleFactor) {}
+
 
 protected:
 

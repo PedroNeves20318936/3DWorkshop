@@ -14,15 +14,27 @@ void FPSCam::calculateDerivedValues() {
 	const float theta_ = glm::radians<float>(m_theta);
 	const float phi_ = glm::radians<float>(m_phi);
 
-	// calculate position vector
-	//cameraPos = glm::vec4(sinf(phi_) * cosf(-theta_) * radius, sinf(-theta_) * radius, cosf(phi_) * cosf(-theta_) * radius, 1.0f);
+	// calculate rotation of the camera
+	glm::quat yaw = glm::angleAxis(phi_, glm::vec3(0, 1, 0));
+	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));
+	glm::quat pitch = glm::angleAxis(theta_, right);
 
-	// calculate orientation basis R
-	//R = glm::eulerAngleY(phi_) * glm::eulerAngleX(theta_);
+	// calculate camera orientation (change the perspective when we nove the camera :p )
+	glm::quat camOrientation = pitch * yaw;
 
-	// calculate view and projection transform matrices
-	m_viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -m_radius)) * glm::eulerAngleX(-theta_) * glm::eulerAngleY(-phi_);
-	m_projectionMatrix = glm::perspective(glm::radians<float>(m_fovY), m_aspect, m_nearPlane, m_farPlane);
+	// create camera rotation matrix for 
+	glm::mat4 cameraRotationMatrix = glm::mat4_cast(camOrientation);
+
+	glm::vec3 forward = glm::normalize(cameraRotationMatrix * glm::vec4(0, 0, -1, 0));
+	glm::vec3 up = glm::normalize(cameraRotationMatrix * glm::vec4(0, 1, 0, 0));
+
+	// Update view matrix using glm::lookAt
+	m_viewMatrix = glm::lookAt(glm::vec3(m_pos), glm::vec3(m_pos) + forward, up);
+
+	// Projection remains the same
+	m_projectionMatrix = glm::perspective(glm::radians(m_fovY), m_aspect, m_nearPlane, m_farPlane);
+
+	//m_pos = glm::vec4(sinf(phi_) * cosf(-theta_) * m_radius, sinf(-theta_) * m_radius, cosf(phi_) * cosf(-theta_) * m_radius, 1.0f);
 }
 
 
@@ -38,7 +50,7 @@ FPSCam::FPSCam() {
 	m_theta = 0.0f;
 	m_phi = 0.0f;
 	m_radius = 15.0f;
-
+	m_pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	m_fovY = 55.0f;
 	m_aspect = 1.0f;
 	m_nearPlane = 0.1f;
@@ -54,11 +66,12 @@ FPSCam::FPSCam() {
 
 
 // create a camera with orientation <theta, phi> representing Euler angles specified in degrees and Euclidean distance 'init_radius' from the origin.  The frustum / viewplane projection coefficients are defined in init_fovy, specified in degrees spanning the entire vertical field of view angle, init_aspect (w/h ratio), init_nearPlane and init_farPlane.  If init_farPlane = 0.0 (as determined by equalf) then the resulting frustum represents an infinite perspective projection.  This is the default
-FPSCam::FPSCam(float _theta, float _phi, float _radius, float _fovY, float _aspect, float _nearPlane, float _farPlane) {
+FPSCam::FPSCam(float _theta, float _phi, float _radius, float _fovY, float _aspect, float _nearPlane, float _farPlane, glm::vec4 _pos) {
 
 	this->m_theta = _theta;
 	this->m_phi = _phi;
 	this->m_radius = std::max<float>(0.0f, _radius);
+	this->m_pos = _pos;
 
 	this->m_fovY = _fovY;
 	this->m_aspect = _aspect;
@@ -162,10 +175,10 @@ void FPSCam::setFarPlaneDistance(float _farPlaneDistance) {
 #pragma region Accessor methods for derived values
 
 // return the camera location in world coordinate space
-//glm::vec4 ArcballCamera::getPosition() {
-//
-//	return cameraPos;
-//}
+glm::vec4 FPSCam::getPosition() {
+
+	return m_pos;
+}
 
 // return a const reference to the camera's orientation matrix in world coordinate space
 //glm::mat4 ArcballCamera::getOrientationBasis() {
