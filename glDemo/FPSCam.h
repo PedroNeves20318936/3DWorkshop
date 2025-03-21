@@ -98,7 +98,6 @@ public:
 
 	void setFarPlaneDistance(float _farPlaneDistance);
 
-
 	// Accessor methods for derived values
 
 	glm::vec4 getPosition(); // return the camera location in world coordinate space.  The radius of the camera's position in spherical coordinates is the l2 norm of the returned position vector
@@ -109,6 +108,10 @@ public:
 
 	glm::mat4 projectionTransform(); // return a const reference the projection transform for the camera.  This is a pass-through method and calls projectionMatrix on the encapsulated ViewFrustum
 
+	void moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed);
+
 	glm::mat4 GetProjectionMatrix() override { return m_projectionMatrix; }
 	glm::mat4 GetViewMatrix() override { return m_viewMatrix; }
+
+	void Load(ifstream& _file) override;
 };

@@ -9,6 +9,7 @@
 #include "AIMesh.h"
 #include "Cube.h"
 #include "Scene.h"
+#include <FPSCam.h>
 
 
 using namespace std;
@@ -50,8 +51,8 @@ int g_NumExamples = 3;
 Scene* g_Scene = nullptr;
 
 // Window size
-const unsigned int g_initWidth = 2560;
-const unsigned int g_initHeight = 1440;
+const unsigned int g_initWidth = 512;
+const unsigned int g_initHeight = 512;
 
 mat4 cameraTransform;
 mat4 cameraProjection;
@@ -366,19 +367,47 @@ void resizeWindow(GLFWwindow* _window, int _width, int _height)
 // Function to call to handle keyboard input
 void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, int _mods)
 {
-	if (_action == GLFW_PRESS) {
+	float moveSpeed = 5.0f;
 
-		// check which key was pressed...
+	if (_action == GLFW_PRESS || _action == GLFW_REPEAT) {
+		if (g_Scene) {
+			Camera* activeCamera = g_Scene->GetActiveCamera();
+			FPSCam* fpsCam = dynamic_cast<FPSCam*>(activeCamera);
+
+			if (fpsCam) {
+				switch (_key) {
+				case GLFW_KEY_W:
+					fpsCam->moveCamera(0.05f, 0.0f, 0.0f, moveSpeed);
+					break;
+				case GLFW_KEY_S:
+					fpsCam->moveCamera(-0.05f, 0.0f, 0.0f, moveSpeed);
+					break;
+				case GLFW_KEY_A:
+					fpsCam->moveCamera(0.0f, -0.05f, 0.0f, moveSpeed);
+					break;
+				case GLFW_KEY_D:
+					fpsCam->moveCamera(0.0f, 0.05f, 0.0f, moveSpeed);
+					break;
+				case GLFW_KEY_E:
+					fpsCam->moveCamera(0.0f, 0.0f, 0.05f, moveSpeed);
+					break;
+				case GLFW_KEY_Q:
+					fpsCam->moveCamera(0.0f, 0.0f, -0.05f, moveSpeed);
+					break;
+				}
+			}
+		}
+
 		switch (_key)
 		{
 		case GLFW_KEY_ESCAPE:
 			glfwSetWindowShouldClose(_window, true);
 			break;
 
-		/*case GLFW_KEY_SPACE:
-			g_showing++;
-			g_showing = g_showing % g_NumExamples;
-			break;*/
+			/*case GLFW_KEY_SPACE:
+				g_showing++;
+				g_showing = g_showing % g_NumExamples;
+				break;*/
 
 		case GLFW_KEY_C:
 			g_showingCamera = (g_showingCamera + 1) % g_Scene->GetCameraCount();
@@ -391,21 +420,19 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			break;
 
 		default:
-		{
-		}
+			break;
 		}
 	}
-	else if (_action == GLFW_RELEASE) 
+	else if (_action == GLFW_RELEASE)
 	{
-		// handle key release events
 		switch (_key)
 		{
 		default:
-		{
-		}
+			break;
 		}
 	}
 }
+
 
 
 void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos)

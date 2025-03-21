@@ -1,5 +1,6 @@
 
 #include "FPSCam.h"
+#include "stringHelp.h"
 
 using namespace std;
 using namespace glm;
@@ -28,10 +29,7 @@ void FPSCam::calculateDerivedValues() {
 	glm::vec3 forward = glm::normalize(cameraRotationMatrix * glm::vec4(0, 0, -1, 0));
 	glm::vec3 up = glm::normalize(cameraRotationMatrix * glm::vec4(0, 1, 0, 0));
 
-	// Update view matrix using glm::lookAt
 	m_viewMatrix = glm::lookAt(glm::vec3(m_pos), glm::vec3(m_pos) + forward, up);
-
-	// Projection remains the same
 	m_projectionMatrix = glm::perspective(glm::radians(m_fovY), m_aspect, m_nearPlane, m_farPlane);
 
 	//m_pos = glm::vec4(sinf(phi_) * cosf(-theta_) * m_radius, sinf(-theta_) * m_radius, cosf(phi_) * cosf(-theta_) * m_radius, 1.0f);
@@ -62,6 +60,17 @@ FPSCam::FPSCam() {
 	// calculate derived values
 	calculateDerivedValues();
 	//F.calculateWorldCoordPlanes(C, R);
+}
+
+void FPSCam::Load(ifstream& _file) {
+	StringHelp::String(_file, "NAME", m_type);
+	StringHelp::Float3(_file, "POS", m_pos.x, m_pos.y, m_pos.z);
+	StringHelp::Float3(_file, "LOOKAT", m_lookAt.x, m_lookAt.y, m_lookAt.z);
+	StringHelp::Float(_file, "FOV", m_fovY);
+	StringHelp::Float(_file, "NEAR", m_nearPlane);
+	StringHelp::Float(_file, "FAR", m_farPlane);
+
+	calculateDerivedValues();
 }
 
 
@@ -101,12 +110,17 @@ float FPSCam::getPhi() {
 }
 
 void FPSCam::rotateCamera(float _dTheta, float _dPhi) {
-
 	m_theta += _dTheta;
 	m_phi += _dPhi;
 
+	const float minTheta = -85.0f;
+	const float maxTheta = 85.0f;
+	m_theta = glm::clamp(m_theta, minTheta, maxTheta);
+
 	calculateDerivedValues();
 }
+
+
 
 float FPSCam::getRadius() {
 
@@ -196,6 +210,17 @@ glm::mat4 FPSCam::viewTransform() {
 glm::mat4 FPSCam::projectionTransform() {
 
 	return m_projectionMatrix;
+}
+
+void FPSCam::moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed) {
+	glm::quat yaw = glm::angleAxis(glm::radians(m_phi), glm::vec3(0, 1, 0));
+	glm::vec3 forward = glm::normalize(yaw * glm::vec3(0, 0, -1));
+	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));
+
+	glm::vec3 movement = (forward * deltaForward + right * deltaRight + glm::vec3(0, deltaUp, 0)) * speed;
+	m_pos += glm::vec4(movement, 0.0f);
+
+	calculateDerivedValues();
 }
 
 #pragma endregion
