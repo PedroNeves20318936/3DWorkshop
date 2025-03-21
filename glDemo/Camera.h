@@ -77,6 +77,8 @@ public:
 
 	virtual void Scale(float scaleFactor) {}
 
+	virtual void moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed) {};
+
 
 protected:
 

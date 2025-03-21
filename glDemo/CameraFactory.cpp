@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "ArcballCamera.h"
 #include "FPSCam.h"
+#include "OrthographicCamera.h"
 #include <assert.h>
 
 using std::string;
@@ -20,6 +21,10 @@ Camera* CameraFactory::makeNewCam(string _type)
 	else if (_type == "FPSCAMERA")
 	{
 		return new FPSCam();
+	}
+	else if (_type == "ORTHOCAM")
+	{
+		return new OrthographicCamera();
 	}
 	else
 	{

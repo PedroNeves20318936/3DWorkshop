@@ -8,7 +8,7 @@
 // Therefore 'forwards' is along the -z axis.  The camera is actually right/left handed agnostic.  
 // The encapsulated frustum however needs to know the differences for the projection matrix and frustum plane calculations
 
-class FPSCam : public Camera {
+class OrthographicCamera : public Camera {
 
 private:
 
@@ -44,9 +44,9 @@ public:
 
 	// Constructors
 
-	FPSCam(); // initialise camera parameters so it is placed at the origin looking down the -z axis (for a right-handed camera) or +z axis (for a left-handed camera)
+	OrthographicCamera(); // initialise camera parameters so it is placed at the origin looking down the -z axis (for a right-handed camera) or +z axis (for a left-handed camera)
 
-	FPSCam(float _theta, float _phi, float _radius, float _fovy, float _aspect, float _nearPlane, float _farPlane, glm::vec4 _pos);
+	OrthographicCamera(float _theta, float _phi, float _radius, float _fovy, float _aspect, float _nearPlane, float _farPlane, glm::vec4 _pos);
 	// create a camera with orientation <theta, phi> representing Euler angles specified in degrees and Euclidean distance 'init_radius' from the origin.  The frustum / viewplane projection coefficients are defined in init_fovy, specified in degrees spanning the entire vertical field of view angle, init_aspect (w/h ratio), init_nearPlane and init_farPlane.  If init_farPlane = 0.0 (as determined by equalf) then the resulting frustum represents an infinite perspective projection.  This is the default
 
 
@@ -108,7 +108,7 @@ public:
 
 	glm::mat4 projectionTransform(); // return a const reference the projection transform for the camera.  This is a pass-through method and calls projectionMatrix on the encapsulated ViewFrustum
 
-	void moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed) override;
+	void moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed);
 
 	glm::mat4 GetProjectionMatrix() override { return m_projectionMatrix; }
 	glm::mat4 GetViewMatrix() override { return m_viewMatrix; }

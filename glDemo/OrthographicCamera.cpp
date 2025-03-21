@@ -1,5 +1,5 @@
 
-#include "FPSCam.h"
+#include "OrthographicCamera.h"
 #include "stringHelp.h"
 
 using namespace std;
@@ -10,7 +10,7 @@ using namespace glm;
 //
 
 // update position, orientation and view matrices when camera rotation and radius is modified
-void FPSCam::calculateDerivedValues() {
+void OrthographicCamera::calculateDerivedValues() {
 
 	const float theta_ = glm::radians<float>(m_theta);
 	const float phi_ = glm::radians<float>(m_phi);
@@ -43,8 +43,8 @@ void FPSCam::calculateDerivedValues() {
 // ArcballCamera constructors
 
 // initialise camera parameters so it is placed at the origin looking down the -z axis (for a right-handed camera) or +z axis (for a left-handed camera)
-FPSCam::FPSCam()
-{
+OrthographicCamera::OrthographicCamera() {
+
 	m_theta = 0.0f;
 	m_phi = 0.0f;
 	m_radius = 15.0f;
@@ -54,7 +54,7 @@ FPSCam::FPSCam()
 	m_nearPlane = 0.1f;
 	m_farPlane = 500.0f;
 
-	m_type = "FPSCAMERA";
+	m_type = "ORTHOCAM";
 	//F = ViewFrustum(55.0f, 1.0f, 0.1f, 500.0f);
 
 	// calculate derived values
@@ -62,7 +62,7 @@ FPSCam::FPSCam()
 	//F.calculateWorldCoordPlanes(C, R);
 }
 
-void FPSCam::Load(ifstream& _file) {
+void OrthographicCamera::Load(ifstream& _file) {
 	StringHelp::String(_file, "NAME", m_name);
 	StringHelp::Float3(_file, "POS", m_pos.x, m_pos.y, m_pos.z);
 	StringHelp::Float3(_file, "LOOKAT", m_lookAt.x, m_lookAt.y, m_lookAt.z);
@@ -75,7 +75,7 @@ void FPSCam::Load(ifstream& _file) {
 
 
 // create a camera with orientation <theta, phi> representing Euler angles specified in degrees and Euclidean distance 'init_radius' from the origin.  The frustum / viewplane projection coefficients are defined in init_fovy, specified in degrees spanning the entire vertical field of view angle, init_aspect (w/h ratio), init_nearPlane and init_farPlane.  If init_farPlane = 0.0 (as determined by equalf) then the resulting frustum represents an infinite perspective projection.  This is the default
-FPSCam::FPSCam(float _theta, float _phi, float _radius, float _fovY, float _aspect, float _nearPlane, float _farPlane, glm::vec4 _pos) {
+OrthographicCamera::OrthographicCamera(float _theta, float _phi, float _radius, float _fovY, float _aspect, float _nearPlane, float _farPlane, glm::vec4 _pos) {
 
 	this->m_theta = _theta;
 	this->m_phi = _phi;
@@ -98,18 +98,18 @@ FPSCam::FPSCam(float _theta, float _phi, float _radius, float _fovY, float _aspe
 #pragma region Accessor methods for stored values
 
 // return the pivot rotation around the x axis (theta) in degrees
-float FPSCam::getTheta() {
+float OrthographicCamera::getTheta() {
 
 	return m_theta;
 }
 
 // return the pivot rotation around the y axis (phi) in degrees
-float FPSCam::getPhi() {
+float OrthographicCamera::getPhi() {
 
 	return m_phi;
 }
 
-void FPSCam::rotateCamera(float _dTheta, float _dPhi) {
+void OrthographicCamera::rotateCamera(float _dTheta, float _dPhi) {
 	m_theta += _dTheta;
 	m_phi += _dPhi;
 
@@ -122,62 +122,62 @@ void FPSCam::rotateCamera(float _dTheta, float _dPhi) {
 
 
 
-float FPSCam::getRadius() {
+float OrthographicCamera::getRadius() {
 
 	return m_radius;
 }
 
-void FPSCam::scaleRadius(float _s) {
+void OrthographicCamera::scaleRadius(float _s) {
 
 	m_radius *= _s;
 	calculateDerivedValues();
 }
 
-void FPSCam::incrementRadius(float _i) {
+void OrthographicCamera::incrementRadius(float _i) {
 
 	m_radius = std::max<float>(m_radius + _i, 0.0f);
 	calculateDerivedValues();
 }
 
-float FPSCam::getFovY() {
+float OrthographicCamera::getFovY() {
 
 	return m_fovY;
 }
 
-void FPSCam::setFovY(float _fovY) {
+void OrthographicCamera::setFovY(float _fovY) {
 
 	this->m_fovY = _fovY;
 	calculateDerivedValues();
 }
 
-float FPSCam::getAspect() {
+float OrthographicCamera::getAspect() {
 
 	return m_aspect;
 }
 
-void FPSCam::setAspect(float _aspect) {
+void OrthographicCamera::setAspect(float _aspect) {
 
 	this->m_aspect = _aspect;
 	calculateDerivedValues();
 }
 
-float FPSCam::getNearPlaneDistance() {
+float OrthographicCamera::getNearPlaneDistance() {
 
 	return m_nearPlane;
 }
 
-void FPSCam::setNearPlaneDistance(float _nearPlaneDistance) {
+void OrthographicCamera::setNearPlaneDistance(float _nearPlaneDistance) {
 
 	this->m_nearPlane = _nearPlaneDistance;
 	calculateDerivedValues();
 }
 
-float FPSCam::getFarPlaneDistance() {
+float OrthographicCamera::getFarPlaneDistance() {
 
 	return m_farPlane;
 }
 
-void FPSCam::setFarPlaneDistance(float _farPlaneDistance) {
+void OrthographicCamera::setFarPlaneDistance(float _farPlaneDistance) {
 
 	this->m_farPlane = _farPlaneDistance;
 	calculateDerivedValues();
@@ -189,7 +189,7 @@ void FPSCam::setFarPlaneDistance(float _farPlaneDistance) {
 #pragma region Accessor methods for derived values
 
 // return the camera location in world coordinate space
-glm::vec4 FPSCam::getPosition() {
+glm::vec4 OrthographicCamera::getPosition() {
 
 	return m_pos;
 }
@@ -201,18 +201,18 @@ glm::vec4 FPSCam::getPosition() {
 //}
 
 // return a const reference to the view transform matrix for the camera
-glm::mat4 FPSCam::viewTransform() {
+glm::mat4 OrthographicCamera::viewTransform() {
 
 	return m_viewMatrix;
 }
 
 // return a const reference the projection transform for the camera
-glm::mat4 FPSCam::projectionTransform() {
+glm::mat4 OrthographicCamera::projectionTransform() {
 
 	return m_projectionMatrix;
 }
 
-void FPSCam::moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed) {
+void OrthographicCamera::moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed) {
 	glm::quat yaw = glm::angleAxis(glm::radians(m_phi), glm::vec3(0, 1, 0));
 	glm::vec3 forward = glm::normalize(yaw * glm::vec3(0, 0, -1));
 	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));

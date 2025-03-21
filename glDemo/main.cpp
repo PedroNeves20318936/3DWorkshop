@@ -374,27 +374,25 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			Camera* activeCamera = g_Scene->GetActiveCamera();
 			FPSCam* fpsCam = dynamic_cast<FPSCam*>(activeCamera);
 
-			if (fpsCam) {
-				switch (_key) {
-				case GLFW_KEY_W:
-					fpsCam->moveCamera(0.05f, 0.0f, 0.0f, moveSpeed);
-					break;
-				case GLFW_KEY_S:
-					fpsCam->moveCamera(-0.05f, 0.0f, 0.0f, moveSpeed);
-					break;
-				case GLFW_KEY_A:
-					fpsCam->moveCamera(0.0f, -0.05f, 0.0f, moveSpeed);
-					break;
-				case GLFW_KEY_D:
-					fpsCam->moveCamera(0.0f, 0.05f, 0.0f, moveSpeed);
-					break;
-				case GLFW_KEY_E:
-					fpsCam->moveCamera(0.0f, 0.0f, 0.05f, moveSpeed);
-					break;
-				case GLFW_KEY_Q:
-					fpsCam->moveCamera(0.0f, 0.0f, -0.05f, moveSpeed);
-					break;
-				}
+			switch (_key) {
+			case GLFW_KEY_W:
+				activeCamera->moveCamera(0.05f, 0.0f, 0.0f, moveSpeed);
+				break;
+			case GLFW_KEY_S:
+				activeCamera->moveCamera(-0.05f, 0.0f, 0.0f, moveSpeed);
+				break;
+			case GLFW_KEY_A:
+				activeCamera->moveCamera(0.0f, -0.05f, 0.0f, moveSpeed);
+				break;
+			case GLFW_KEY_D:
+				activeCamera->moveCamera(0.0f, 0.05f, 0.0f, moveSpeed);
+				break;
+			case GLFW_KEY_E:
+				activeCamera->moveCamera(0.0f, 0.0f, 0.05f, moveSpeed);
+				break;
+			case GLFW_KEY_Q:
+				activeCamera->moveCamera(0.0f, 0.0f, -0.05f, moveSpeed);
+				break;
 			}
 		}
 

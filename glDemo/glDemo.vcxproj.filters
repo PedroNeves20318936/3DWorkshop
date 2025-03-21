@@ -123,6 +123,9 @@
     <ClInclude Include="FPSCam.h">
       <Filter>Example Headers</Filter>
     </ClInclude>
+    <ClInclude Include="OrthographicCamera.h">
+      <Filter>Example Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -204,6 +207,9 @@
       <Filter>Scene Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FPSCam.cpp">
+      <Filter>Example Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrthographicCamera.cpp">
       <Filter>Example Source Files</Filter>
     </ClCompile>
   </ItemGroup>
