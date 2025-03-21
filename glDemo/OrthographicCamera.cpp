@@ -15,25 +15,25 @@ void OrthographicCamera::calculateDerivedValues() {
 	const float theta_ = glm::radians<float>(m_theta);
 	const float phi_ = glm::radians<float>(m_phi);
 
-	// calculate rotation of the camera
 	glm::quat yaw = glm::angleAxis(phi_, glm::vec3(0, 1, 0));
 	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));
 	glm::quat pitch = glm::angleAxis(theta_, right);
 
-	// calculate camera orientation (change the perspective when we nove the camera :p )
 	glm::quat camOrientation = pitch * yaw;
-
-	// create camera rotation matrix for 
 	glm::mat4 cameraRotationMatrix = glm::mat4_cast(camOrientation);
 
 	glm::vec3 forward = glm::normalize(cameraRotationMatrix * glm::vec4(0, 0, -1, 0));
 	glm::vec3 up = glm::normalize(cameraRotationMatrix * glm::vec4(0, 1, 0, 0));
 
 	m_viewMatrix = glm::lookAt(glm::vec3(m_pos), glm::vec3(m_pos) + forward, up);
-	m_projectionMatrix = glm::perspective(glm::radians(m_fovY), m_aspect, m_nearPlane, m_farPlane);
 
-	//m_pos = glm::vec4(sinf(phi_) * cosf(-theta_) * m_radius, sinf(-theta_) * m_radius, cosf(phi_) * cosf(-theta_) * m_radius, 1.0f);
+	float orthoHeight = 5.0f;
+	float orthoWidth = orthoHeight * m_aspect;
+
+	m_projectionMatrix = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, m_nearPlane, m_farPlane);
+	//m_projectionMatrix = glm::perspective(glm::radians(m_fovY), m_aspect, m_nearPlane, m_farPlane);
 }
+
 
 
 //
@@ -45,8 +45,8 @@ void OrthographicCamera::calculateDerivedValues() {
 // initialise camera parameters so it is placed at the origin looking down the -z axis (for a right-handed camera) or +z axis (for a left-handed camera)
 OrthographicCamera::OrthographicCamera() {
 
-	m_theta = 0.0f;
-	m_phi = 0.0f;
+	m_theta = -30.0f;
+	m_phi = -30.0f;
 	m_radius = 15.0f;
 	m_pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	m_fovY = 55.0f;
@@ -110,12 +110,12 @@ float OrthographicCamera::getPhi() {
 }
 
 void OrthographicCamera::rotateCamera(float _dTheta, float _dPhi) {
-	m_theta += _dTheta;
+	//m_theta += _dTheta;
 	m_phi += _dPhi;
 
-	const float minTheta = -85.0f;
+	/*const float minTheta = -85.0f;
 	const float maxTheta = 85.0f;
-	m_theta = glm::clamp(m_theta, minTheta, maxTheta);
+	m_theta = glm::clamp(m_theta, minTheta, maxTheta);*/
 
 	calculateDerivedValues();
 }
@@ -219,6 +219,11 @@ void OrthographicCamera::moveCamera(float deltaForward, float deltaRight, float 
 
 	glm::vec3 movement = (forward * deltaForward + right * deltaRight + glm::vec3(0, deltaUp, 0)) * speed;
 	m_pos += glm::vec4(movement, 0.0f);
+
+	// Print the updated position
+	std::cout << "Camera Position: X = " << m_pos.x
+		<< ", Y = " << m_pos.y
+		<< ", Z = " << m_pos.z << std::endl;
 
 	calculateDerivedValues();
 }

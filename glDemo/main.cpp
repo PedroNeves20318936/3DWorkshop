@@ -372,7 +372,6 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 	if (_action == GLFW_PRESS || _action == GLFW_REPEAT) {
 		if (g_Scene) {
 			Camera* activeCamera = g_Scene->GetActiveCamera();
-			FPSCam* fpsCam = dynamic_cast<FPSCam*>(activeCamera);
 
 			switch (_key) {
 			case GLFW_KEY_W:
