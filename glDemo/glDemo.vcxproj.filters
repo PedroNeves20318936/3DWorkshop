@@ -126,6 +126,9 @@
     <ClInclude Include="OrthographicCamera.h">
       <Filter>Example Headers</Filter>
     </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Scene Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -212,6 +215,9 @@
     <ClCompile Include="OrthographicCamera.cpp">
       <Filter>Example Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Scene Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="manifest.txt">
@@ -233,5 +239,7 @@
     </None>
     <None Include="Assets\Shaders\texture-full.vert" />
     <None Include="Assets\Shaders\texture-full.frag" />
+    <None Include="Assets\Shaders\texture-point.vert" />
+    <None Include="Assets\Shaders\texture-point.frag" />
   </ItemGroup>
 </Project>

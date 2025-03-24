@@ -217,13 +217,13 @@ void OrthographicCamera::moveCamera(float deltaForward, float deltaRight, float 
 	glm::vec3 forward = glm::normalize(yaw * glm::vec3(0, 0, -1));
 	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));
 
-	glm::vec3 movement = (forward * deltaForward + right * deltaRight + glm::vec3(0, deltaUp, 0)) * speed;
+	glm::vec3 movement = (forward * deltaForward + right * deltaRight) * speed;
 	m_pos += glm::vec4(movement, 0.0f);
 
 	// Print the updated position
-	std::cout << "Camera Position: X = " << m_pos.x
+	/*std::cout << "Camera Position: X = " << m_pos.x
 		<< ", Y = " << m_pos.y
-		<< ", Z = " << m_pos.z << std::endl;
+		<< ", Z = " << m_pos.z << std::endl;*/
 
 	calculateDerivedValues();
 }

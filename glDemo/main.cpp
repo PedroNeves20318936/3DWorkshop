@@ -30,10 +30,10 @@ double				g_prevMouseX, g_prevMouseY;
 //CGPrincipleAxes* g_principleAxes = nullptr;
 Cube* g_cube = nullptr;
 
-GLuint g_flatColourShader;
+//GLuint g_flatColourShader;
 
-GLuint g_texDirLightShader;
-vec3 g_DLdirection = vec3(0.0f, 1.0f, 0.0f);
+//GLuint g_texDirLightShader;
+/*vec3 g_DLdirection = vec3(0.0f, 1.0f, 0.0f);
 vec3 g_DLcolour = vec3(1.0f, 1.0f, 1.0f);
 vec3 g_DLambient = vec3(0.2f, 0.2f, 0.2f);
 
@@ -41,7 +41,8 @@ AIMesh* g_creatureMesh = nullptr;
 vec3 g_beastPos = vec3(2.0f, 0.0f, 0.0f);
 float g_beastRotation = 0.0f;
 AIMesh* g_planetMesh = nullptr;
-AIMesh* g_duckMesh = nullptr;
+AIMesh* g_duckMesh = nullptr;*/
+static GLFWwindow* g_window = nullptr;
 
 //int g_showing = 0;
 int g_showingCamera = 0;
@@ -102,6 +103,7 @@ int main()
 	}
 	glfwMakeContextCurrent(window);
 
+	g_window = window;
 
 	// Set callback functions to handle different events
 	glfwSetFramebufferSizeCallback(window, resizeWindow); // resize window callback
@@ -137,16 +139,16 @@ int main()
 	// Setup the Example Objects
 	//
 
-	g_texDirLightShader = setupShaders(string("Assets\\Shaders\\texture-directional.vert"), string("Assets\\Shaders\\texture-directional.frag"));
-	g_flatColourShader = setupShaders(string("Assets\\Shaders\\flatColour.vert"), string("Assets\\Shaders\\flatColour.frag"));
+	//g_texDirLightShader = setupShaders(string("Assets\\Shaders\\texture-directional.vert"), string("Assets\\Shaders\\texture-directional.frag"));
+	//g_flatColourShader = setupShaders(string("Assets\\Shaders\\flatColour.vert"), string("Assets\\Shaders\\flatColour.frag"));
 
 	//g_mainCamera = new ArcballCamera(0.0f, 0.0f, 1.98595f, 55.0f, 1.0f, 0.1f, 500.0f);
 
 	//g_principleAxes = new CGPrincipleAxes();
 
-	g_cube = new Cube();
+	//g_cube = new Cube();
 
-	g_creatureMesh = new AIMesh(string("Assets\\beast\\beast.obj"));
+	/*g_creatureMesh = new AIMesh(string("Assets\\beast\\beast.obj"));
 	if (g_creatureMesh) {
 		g_creatureMesh->addTexture(string("Assets\\beast\\beast_texture.bmp"), FIF_BMP);
 	}
@@ -159,7 +161,7 @@ int main()
 	g_duckMesh = new AIMesh(string("Assets\\duck\\rubber_duck_toy_4k.obj"));
 	if (g_duckMesh) {
 		g_duckMesh->addTexture(string("Assets\\duck\\rubber_duck_toy_diff_4k.jpg"), FIF_JPEG);
-	}
+	}*/
 
 	//
 	//Set up Scene class
@@ -333,18 +335,40 @@ void renderScene()
 
 
 // Function called to animate elements in the scene
-void updateScene() 
+void updateScene()
 {
 	float tDelta = 0.0f;
-
 	if (g_gameClock) {
-
 		g_gameClock->tick();
 		tDelta = (float)g_gameClock->gameTimeDelta();
 	}
 
+	Camera* cam = g_Scene->GetActiveCamera();
+	float speed = 5.0f * tDelta;
+
+	if (glfwGetKey(g_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) 
+	{
+		speed *= 5.0f;
+	}
+	if (glfwGetKey(g_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) 
+	{
+		speed /= 3.0f;
+	}
+
+	glm::vec3 movement(0.0f);
+
+	movement.z = (glfwGetKey(g_window, GLFW_KEY_W) == GLFW_PRESS) - (glfwGetKey(g_window, GLFW_KEY_S) == GLFW_PRESS);
+	movement.x = (glfwGetKey(g_window, GLFW_KEY_D) == GLFW_PRESS) - (glfwGetKey(g_window, GLFW_KEY_A) == GLFW_PRESS);
+	movement.y = (glfwGetKey(g_window, GLFW_KEY_E) == GLFW_PRESS) - (glfwGetKey(g_window, GLFW_KEY_Q) == GLFW_PRESS);
+
+	if (glm::length(movement) > 0.0f) {
+		movement = glm::normalize(movement);
+		cam->moveCamera(movement.z, movement.x, movement.y, speed);
+	}
+
 	g_Scene->Update(tDelta);
 }
+
 
 
 #pragma region Event handler functions
@@ -373,7 +397,7 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 		if (g_Scene) {
 			Camera* activeCamera = g_Scene->GetActiveCamera();
 
-			switch (_key) {
+			/*switch (_key) {
 			case GLFW_KEY_W:
 				activeCamera->moveCamera(0.05f, 0.0f, 0.0f, moveSpeed);
 				break;
@@ -392,7 +416,7 @@ void keyboardHandler(GLFWwindow* _window, int _key, int _scancode, int _action, 
 			case GLFW_KEY_Q:
 				activeCamera->moveCamera(0.0f, 0.0f, -0.05f, moveSpeed);
 				break;
-			}
+			}*/
 		}
 
 		switch (_key)
@@ -454,7 +478,7 @@ void mouseMoveHandler(GLFWwindow* _window, double _xpos, double _ypos)
 
 void mouseButtonHandler(GLFWwindow* _window, int _button, int _action, int _mods) 
 {
-	if (_button == GLFW_MOUSE_BUTTON_LEFT) 
+	if (_button == GLFW_MOUSE_BUTTON_RIGHT) 
 	{
 		if (_action == GLFW_PRESS) 
 		{
