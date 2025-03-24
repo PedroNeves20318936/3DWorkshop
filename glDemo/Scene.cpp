@@ -368,7 +368,7 @@ void Scene::resizeWindowScene(int _width, int _height)
 	if (_height == 0) _height = 1;
 
 	float newAspect = static_cast<float>(_width) / static_cast<float>(_height);
-	cout << "Resizing window! New aspect: " << newAspect << " (Width: " << _width << ", Height: " << _height << ")" << endl;
+	//cout << "Resizing window! New aspect: " << newAspect << " (Width: " << _width << ", Height: " << _height << ")" << endl;
 
 	for (Camera* cam : m_Cameras)
 	{
