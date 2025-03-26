@@ -29,12 +29,12 @@ void PointLight::SetRenderValues(unsigned int _prog)
 	GLint loc;
 	std::string baseString = m_name + "Poi";
 
-	if (Helper::SetUniformLocation(_prog, (baseString + "Constant").c_str(), &loc))
+	if (Helper::SetUniformLocation(_prog, (m_name + "Constant").c_str(), &loc))
 		glUniform1f(loc, m_constant);
 
-	if (Helper::SetUniformLocation(_prog, (baseString + "Linear").c_str(), &loc))
+	if (Helper::SetUniformLocation(_prog, (m_name + "Linear").c_str(), &loc))
 		glUniform1f(loc, m_linear);
 
-	if (Helper::SetUniformLocation(_prog, (baseString + "Quadratic").c_str(), &loc))
+	if (Helper::SetUniformLocation(_prog, (m_name + "Quadratic").c_str(), &loc))
 		glUniform1f(loc, m_quadratic);
 }
