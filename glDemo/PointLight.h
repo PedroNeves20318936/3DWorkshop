@@ -20,7 +20,7 @@ public:
 	// a nice feature would be a day / night cycle effect 
 
 protected:
-	vec3 m_direction;
+	//vec3 m_direction;
 	float m_constant;
 	float m_linear;
 	float m_quadratic;

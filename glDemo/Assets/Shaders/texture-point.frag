@@ -6,9 +6,13 @@
 layout(binding = 0) uniform sampler2D texture;
 
 // Directional light model
-uniform vec3 POIPoi;
 uniform vec3 POICol;
 uniform vec3 POIAmb;
+uniform vec3 POIPos;
+
+uniform float POIConstant;
+uniform float POILinear;
+uniform float POIQuadratic;
 
 
 in SimplePacket {
@@ -23,15 +27,20 @@ in SimplePacket {
 layout (location=0) out vec4 fragColour;
 
 void main(void) {
-
-	// calculate lambertian (l)
 	vec3 N = normalize(inputFragment.surfaceNormal);
-	float l = dot(N, POIPoi);
+	vec3 lightDir = normalize(POIPos - inputFragment.surfaceWorldPos);
 
-	// Calculate diffuse brightness / colour for fragment
+	float lambert = max(dot(N, lightDir), 0.0);
+
+	float distance = length(POIPos - inputFragment.surfaceWorldPos);
+
+	float attenuation = 1.0 / (POIConstant + POILinear * distance + POIQuadratic * (distance * distance));
+	attenuation = clamp(attenuation, 0.0, 1.0);
+
 	vec4 surfaceColour = texture2D(texture, inputFragment.texCoord);
-	vec3 diffuseColour = surfaceColour.rgb * POICol * l;
+	vec3 diffuse = surfaceColour.rgb * POICol * lambert * attenuation;
 
-	fragColour = vec4(POIAmb,1.0)+vec4(diffuseColour, 1.0);
-	//fragColour = vec4(vec3(l, l, l), 1.0);
+	vec3 ambient = POIAmb * attenuation;
+
+	fragColour = vec4(ambient + diffuse, 1.0);
 }
