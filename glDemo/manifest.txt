@@ -85,7 +85,7 @@ LINEAR: 0.045
 QUADRATIC: 0.0075
 }
 
-MODELS 6
+MODELS 7
 {
 TYPE: AI
 NAME: BEAST
@@ -114,8 +114,13 @@ TYPE: AI
 NAME: SKYBOX
 FILE: Assets\\skybox.obj
 }
+{
+TYPE: AI
+NAME: ARMS
+FILE: Assets\\arms.obj
+}
 
-TEXTURES 7
+TEXTURES 8
 {
 TYPE: FIF_BMP
 NAME: BEAST
@@ -151,6 +156,11 @@ TYPE: FIF_PNG
 NAME: SKYBOX
 FILE: Assets\\Textures\\CubeMap_Cave.png
 }
+{
+TYPE: FIF_PNG
+NAME: ARMS
+FILE: Assets\\Textures\\arms.png
+}
 
 SHADERS 4
 {
@@ -174,7 +184,7 @@ VERTFILE: Assets\\Shaders\\texture-point.vert
 FRAGFILE: Assets\\Shaders\\texture-point.frag
 }
 
-GAMEOBJECTS 6
+GAMEOBJECTS 7
 {
 TYPE: EXAMPLE
 NAME: BEAST
@@ -238,4 +248,15 @@ ROTINC: 0.0 0.0 0.0
 MODEL: SKYBOX
 TEXTURE: SKYBOX
 SHADERS: TEXFULL
+}
+{
+TYPE: EXAMPLE
+NAME: ARMS
+POS: 1.0 0.0 0.0
+ROT: 0.0 0.0 0.0
+SCALE: 2.0 2.0 2.0
+ROTINC: 0.0 0.0 0.0
+MODEL: ARMS
+TEXTURE: ARMS
+SHADERS: TEXPOI
 }
