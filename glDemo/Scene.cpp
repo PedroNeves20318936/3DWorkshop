@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <ArcballCamera.h>
 #include <helper.h>
+#include <FPSModelCam.h>
 
 Scene::Scene()
 {
@@ -309,7 +310,15 @@ void Scene::Load(ifstream& _file)
 		cout << "}\n";
 	}
 
+	FPSModelCam* fpsModelCam = dynamic_cast<FPSModelCam*>(GetCamera("FPSMODELCAMERA"));
 
+	GameObject* arms = GetGameObject("ARMS");
+
+	if (fpsModelCam && arms) 
+	{
+		fpsModelCam->AttachArms(arms);
+		fpsModelCam->ForceUpdate();
+	}
 }
 
 void Scene::Init()

@@ -2,6 +2,7 @@
 
 #include "core.h"
 #include "Camera.h"
+#include "GameObject.h"
 
 // Model an arcball / pivot camera looking at the origin (0, 0, 0).  
 // The camera by default looks down the negative z axis (using a right-handed coordinate system).  
@@ -39,6 +40,8 @@ private:
 
 	// update position, orientation, view and projection matrices when camera rotation and radius are modified
 	void calculateDerivedValues();
+
+	GameObject* m_arms = nullptr;
 
 public:
 
@@ -114,4 +117,7 @@ public:
 	glm::mat4 GetViewMatrix() override { return m_viewMatrix; }
 
 	void Load(ifstream& _file) override;
+
+	void AttachArms(GameObject* arms) { m_arms = arms; }
+	void ForceUpdate() { calculateDerivedValues(); }
 };

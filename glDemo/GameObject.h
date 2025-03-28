@@ -38,6 +38,10 @@ public:
 	//this GameObject should be drawn in THIS render pass
 	RenderPass GetRP() { return m_RP; }
 
+	void SetPosition(const glm::vec3& pos) { m_pos = pos; }
+	void SetRotation(const glm::vec3& rot) { m_rot = rot; }
+
+
 protected:
 
 	string m_name;

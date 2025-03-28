@@ -33,6 +33,18 @@ void FPSModelCam::calculateDerivedValues() {
 	m_projectionMatrix = glm::perspective(glm::radians(m_fovY), m_aspect, m_nearPlane, m_farPlane);
 
 	//m_pos = glm::vec4(sinf(phi_) * cosf(-theta_) * m_radius, sinf(-theta_) * m_radius, cosf(phi_) * cosf(-theta_) * m_radius, 1.0f);
+
+	if (m_arms) {
+
+		glm::vec3 offset = yaw * glm::vec3(0.0f, -0.3f, -0.6f);
+		glm::vec3 newPos = glm::vec3(m_pos) + offset;
+
+		glm::vec3 newRot = glm::vec3(0.0f, m_phi + 180.0f, 0.0f);
+
+		m_arms->SetPosition(newPos);
+		m_arms->SetRotation(newRot);
+	}
+
 }
 
 
