@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "ArcballCamera.h"
 #include "FPSCam.h"
+#include "FPSModelCam.h"
 #include "OrthographicCamera.h"
 #include <assert.h>
 
@@ -25,6 +26,10 @@ Camera* CameraFactory::makeNewCam(string _type)
 	else if (_type == "ORTHOCAM")
 	{
 		return new OrthographicCamera();
+	}
+	else if (_type == "FPSMODELCAMERA")
+	{
+		return new FPSModelCam();
 	}
 	else
 	{
