@@ -163,12 +163,40 @@ void Scene::Render()
 			(*it)->Render();
 		}
 	}
+
+	for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
+	{
+		if ((*it)->GetRP() & RP_TRANSPARENT)
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			GLuint SP = (*it)->GetShaderProg();
+			glUseProgram(SP);
+
+			m_useCamera->SetRenderValues(SP);
+			SetShaderUniforms(SP);
+
+			glm::mat4 projectionMatrix = m_useCamera->GetProjectionMatrix();
+			glm::mat4 viewMatrix = m_useCamera->GetViewMatrix();
+
+			GLint pLocation;
+			Helper::SetUniformLocation(SP, "viewMatrix", &pLocation);
+			glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+
+			Helper::SetUniformLocation(SP, "projMatrix", &pLocation);
+			glUniformMatrix4fv(pLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+
+			(*it)->PreRender();
+			(*it)->Render();
+
+			glDisable(GL_BLEND);
+		}
+
+	}
 }
 
-
-
 	// Your RP_TRANSPARENT logic here (
-
 
 void Scene::SetShaderUniforms(GLuint _shaderprog)
 {

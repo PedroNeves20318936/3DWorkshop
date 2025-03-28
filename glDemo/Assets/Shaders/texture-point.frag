@@ -42,5 +42,5 @@ void main(void) {
 
 	vec3 ambient = POIAmb * attenuation;
 
-	fragColour = vec4(ambient + diffuse, 1.0);
+	fragColour = vec4(ambient + diffuse, 0.5f);
 }
