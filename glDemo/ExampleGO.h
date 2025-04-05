@@ -23,6 +23,9 @@ public:
 	virtual void Render();
 
 	virtual void Init(Scene* _scene);
+
+	// added this section to store a "list" of vector 3 elements (which will be utilized to store the x,y,z position of my
+	// objects that will be re-rendered)
 	std::vector<glm::vec3> m_modelOffsets;
 
 protected:
