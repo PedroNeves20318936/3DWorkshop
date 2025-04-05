@@ -42,6 +42,7 @@ private:
 	void calculateDerivedValues();
 
 	GameObject* m_arms = nullptr;
+	GameObject* m_beast = nullptr;
 
 public:
 
@@ -119,5 +120,6 @@ public:
 	void Load(ifstream& _file) override;
 
 	void AttachArms(GameObject* arms) { m_arms = arms; }
+	void AttachBeast(GameObject* beast) { m_beast = beast; }
 	void ForceUpdate() { calculateDerivedValues(); }
 };

@@ -27,7 +27,7 @@ void OrthographicCamera::calculateDerivedValues() {
 
 	m_viewMatrix = glm::lookAt(glm::vec3(m_pos), glm::vec3(m_pos) + forward, up);
 
-	float orthoHeight = 5.0f;
+	float orthoHeight = 10.0f;
 	float orthoWidth = orthoHeight * m_aspect;
 
 	m_projectionMatrix = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, m_nearPlane, m_farPlane);
@@ -45,8 +45,8 @@ void OrthographicCamera::calculateDerivedValues() {
 // initialise camera parameters so it is placed at the origin looking down the -z axis (for a right-handed camera) or +z axis (for a left-handed camera)
 OrthographicCamera::OrthographicCamera() {
 
-	m_theta = -30.0f;
-	m_phi = -30.0f;
+	m_theta = -35.0f;
+	m_phi = -35.0f;
 	m_radius = 15.0f;
 	m_pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	m_fovY = 55.0f;

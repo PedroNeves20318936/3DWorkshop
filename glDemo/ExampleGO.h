@@ -23,6 +23,7 @@ public:
 	virtual void Render();
 
 	virtual void Init(Scene* _scene);
+	std::vector<glm::vec3> m_modelOffsets;
 
 protected:
 

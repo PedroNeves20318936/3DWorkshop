@@ -32,6 +32,6 @@ void main(void) {
 	vec4 surfaceColour = texture2D(texture, inputFragment.texCoord);
 	vec3 diffuseColour = surfaceColour.rgb;
 
-	fragColour = vec4(DIRAmb,1.0)+vec4(diffuseColour, 1.0);
-	//fragColour = vec4(vec3(l, l, l), 1.0);
+	fragColour = vec4(DIRAmb + diffuseColour, 0.2);
+	//fragColour = vec4(vec3(l, l, l), 0.05);
 }

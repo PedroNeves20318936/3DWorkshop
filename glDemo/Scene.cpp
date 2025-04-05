@@ -141,6 +141,15 @@ void Scene::Render()
 {
 	for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
 	{
+		if (m_useCamera && m_useCamera->GetName() == "FPSMODELCAMERA" && (*it)->GetName() == "BEAST")
+			continue;
+
+		if (m_useCamera && m_useCamera->GetName() != "FPSMODELCAMERA" && (*it)->GetName() == "ARMS")
+			continue;
+
+		if (m_useCamera && m_useCamera->GetName() != "FPSMODELCAMERA" && (*it)->GetName() == "CEILING")
+			continue;
+
 		if ((*it)->GetRP() & RP_OPAQUE)
 		{
 			GLuint SP = (*it)->GetShaderProg();
@@ -170,6 +179,7 @@ void Scene::Render()
 		{
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glDepthMask(GL_FALSE);
 
 			GLuint SP = (*it)->GetShaderProg();
 			glUseProgram(SP);
@@ -190,6 +200,7 @@ void Scene::Render()
 			(*it)->PreRender();
 			(*it)->Render();
 
+			glDepthMask(GL_TRUE);
 			glDisable(GL_BLEND);
 		}
 
@@ -341,10 +352,12 @@ void Scene::Load(ifstream& _file)
 	FPSModelCam* fpsModelCam = dynamic_cast<FPSModelCam*>(GetCamera("FPSMODELCAMERA"));
 
 	GameObject* arms = GetGameObject("ARMS");
+	GameObject* beast = GetGameObject("BEAST");
 
-	if (fpsModelCam && arms) 
+	if (fpsModelCam && arms && beast) 
 	{
 		fpsModelCam->AttachArms(arms);
+		fpsModelCam->AttachBeast(beast);
 		fpsModelCam->ForceUpdate();
 	}
 }

@@ -36,15 +36,17 @@ void FPSModelCam::calculateDerivedValues() {
 
 	if (m_arms) {
 
-		glm::vec3 offset = yaw * glm::vec3(0.0f, -0.3f, -0.6f);
+		glm::vec3 offset = yaw * glm::vec3(0.0f, -0.3f, -0.2f);
 		glm::vec3 newPos = glm::vec3(m_pos) + offset;
 
 		glm::vec3 newRot = glm::vec3(0.0f, m_phi + 180.0f, 0.0f);
 
 		m_arms->SetPosition(newPos);
 		m_arms->SetRotation(newRot);
-	}
 
+		m_beast->SetPosition(newPos);
+		m_beast->SetRotation(newRot);
+	}
 }
 
 
@@ -229,8 +231,13 @@ void FPSModelCam::moveCamera(float deltaForward, float deltaRight, float deltaUp
 	glm::vec3 forward = glm::normalize(yaw * glm::vec3(0, 0, -1));
 	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));
 
-	glm::vec3 movement = (forward * deltaForward + right * deltaRight + glm::vec3(0, deltaUp, 0)) * speed;
+	glm::vec3 movement = (forward * deltaForward + right * deltaRight) * speed;
 	m_pos += glm::vec4(movement, 0.0f);
+
+	// Print the updated position
+	/*std::cout << "Camera Position: X = " << m_pos.x
+		<< ", Y = " << m_pos.y
+		<< ", Z = " << m_pos.z << std::endl;*/
 
 	calculateDerivedValues();
 }
