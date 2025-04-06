@@ -132,6 +132,9 @@
     <ClInclude Include="FPSModelCam.h">
       <Filter>Base Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Base Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -224,6 +227,9 @@
     <ClCompile Include="FPSModelCam.cpp">
       <Filter>Base Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Base Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="manifest.txt">
@@ -247,5 +253,7 @@
     <None Include="Assets\Shaders\texture-full.frag" />
     <None Include="Assets\Shaders\texture-point.vert" />
     <None Include="Assets\Shaders\texture-point.frag" />
+    <None Include="Assets\Shaders\texture-spot.frag" />
+    <None Include="Assets\Shaders\texture-spot.vert" />
   </ItemGroup>
 </Project>

@@ -168,6 +168,7 @@
     <ClInclude Include="PrincipleAxes.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="shader_setup.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="stringHelp.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureLoader.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="PrincipleAxes.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="shader_setup.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
   </ItemGroup>
@@ -216,6 +218,8 @@
     <None Include="Assets\Shaders\texture-full.vert" />
     <None Include="Assets\Shaders\texture-point.frag" />
     <None Include="Assets\Shaders\texture-point.vert" />
+    <None Include="Assets\Shaders\texture-spot.frag" />
+    <None Include="Assets\Shaders\texture-spot.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
