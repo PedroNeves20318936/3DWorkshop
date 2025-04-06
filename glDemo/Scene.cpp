@@ -21,7 +21,7 @@ Scene::Scene()
 Scene::~Scene()
 {
 	//TODO: We are being really naught and not deleting everything as we finish
-	//what shoudl really go here and in similar places throughout the code base?
+	//what should really go here and in similar places throughout the code base?
 }
 
 //tick all my Game Objects, lights and cameras
@@ -141,12 +141,13 @@ void Scene::Render()
 {
 	for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
 	{
+		// this section makes sure that the "BEAST" is only rendered if the user is not on the "FPSMODELCAMERA" (to avoid clipping while on first person)
 		if (m_useCamera && m_useCamera->GetName() == "FPSMODELCAMERA" && (*it)->GetName() == "BEAST")
 			continue;
-
+		// this section makes sure that the "ARMS" is only rendered if the user is on the "FPSMODELCAMERA" (to avoid arm duplication)
 		if (m_useCamera && m_useCamera->GetName() != "FPSMODELCAMERA" && (*it)->GetName() == "ARMS")
 			continue;
-
+		// this section makes sure that the "CEILING" is only rendered if the user is on the "FPSMODELCAMERA" (to avoid blocking the scene for other cameras)
 		if (m_useCamera && m_useCamera->GetName() != "FPSMODELCAMERA" && (*it)->GetName() == "CEILING")
 			continue;
 
@@ -173,12 +174,17 @@ void Scene::Render()
 		}
 	}
 
+	// the following for loop is responsible for rendering transparent/translucent objects
 	for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
 	{
+		// it first then checks if the object has the "RP_TRANSPARENT" render pass assigned
 		if ((*it)->GetRP() & RP_TRANSPARENT)
 		{
+			// enables blending on OpenGL (this allows for the transparency to be drawn correctly)
 			glEnable(GL_BLEND);
+			// makes transparent pixels blend with the background (depending on their alpha values)
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			// disables writing on the depth buffer (so that transparent objects don't block other transparent objects)
 			glDepthMask(GL_FALSE);
 
 			GLuint SP = (*it)->GetShaderProg();
@@ -200,6 +206,7 @@ void Scene::Render()
 			(*it)->PreRender();
 			(*it)->Render();
 
+			// reverts settings to normal
 			glDepthMask(GL_TRUE);
 			glDisable(GL_BLEND);
 		}
@@ -349,11 +356,15 @@ void Scene::Load(ifstream& _file)
 		cout << "}\n";
 	}
 
+	// This section gets the fps camera by its name
 	FPSModelCam* fpsModelCam = dynamic_cast<FPSModelCam*>(GetCamera("FPSMODELCAMERA"));
 
+	// These following lines get the beast models (both the full version and the arms only version)
 	GameObject* arms = GetGameObject("ARMS");
 	GameObject* beast = GetGameObject("BEAST");
 
+	// It then attaches these models into the camera to create a "possession" effect
+	// I also call for "ForceUpdate" just to make sure everything is updated right as the game starts
 	if (fpsModelCam && arms && beast) 
 	{
 		fpsModelCam->AttachArms(arms);
@@ -364,7 +375,7 @@ void Scene::Load(ifstream& _file)
 
 void Scene::Init()
 {
-	//initialise all cameras
+	//initialize all cameras
 	//scene is passed down here to allow for linking of cameras to game objects
 	int count = 0;
 	for (list<Camera*>::iterator it = m_Cameras.begin(); it != m_Cameras.end(); ++it)
@@ -394,18 +405,21 @@ void Scene::Init()
 		(*it)->Init(this);
 	}
 }
-
+ 
 void Scene::SwitchCamera(int cameraIndex)
 {
+	// wraps the index around (cant go out of bonds)
 	cameraIndex = cameraIndex % m_Cameras.size();
 
+	// "it" is an iterator that is assigned to the beginning of my camera list
 	auto it = m_Cameras.begin();
+	// advance the iterator to the specified index (selects the desired camera)
 	std::advance(it, cameraIndex);
 
+	// set use camera to "it", therefore switching to the next camera
 	m_useCamera = *it;
 	cout << "Switching to: " << m_useCamera->GetName() << endl;
 }
-
 
 void Scene::resizeWindowScene(int _width, int _height)
 {

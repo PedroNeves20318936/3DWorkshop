@@ -21,7 +21,7 @@ void ExampleGO::Load(ifstream& _file)
     StringHelp::String(_file, "TEXTURE", m_TexName);
     StringHelp::String(_file, "SHADERS", m_ShaderName);
 
-    // this snippet of the code here servers the purpose of adding my desired possitions into the "m_modelOffsets" so that they can be re-rendered
+    // this snippet of the code here servers the purpose of adding my desired positions into the "m_modelOffsets" so that they can be re-rendered
     auto Add = [&](float x, float y, float z) {
         m_modelOffsets.push_back(glm::vec3(x, y, z));
         };
@@ -29,14 +29,14 @@ void ExampleGO::Load(ifstream& _file)
     // this "while" will go through all words of my _file (manifest.txt) 
     while (_file)
     {
-        // every word will be then stored momentarelly into a variable that I created called (token)
+        // every word will be then stored momentarily into a variable that I created called (token)
         std::string token;
         _file >> token;
 
         // this token would then be verified a couple times, by seeing if its equal to any of my predetermined "Keywords",
         // the first keyword that I created is "OFFSET:", basically if the token sees this word it would then add its three next numbers as
         // x,y,z coordinates so that they can be processed again in the "Render" function, (this was created mainly for tests, as you can see that its
-        // not beeing utilized in my manifest for the final version, this is due to it requiring many lines to create large structures so it would clutter the manifest file)
+        // not being utilized in my manifest for the final version, this is due to it requiring many lines to create large structures so it would clutter the manifest file)
         if (token == "OFFSET:")
         {
             float x, y, z;
@@ -44,7 +44,7 @@ void ExampleGO::Load(ifstream& _file)
             Add(x, y, z);
         }
         // the next keyword is in relation to the creation of prefabs (basically the creation of a copy)
-        // if my code sees the "PREFAB:" keyword it would then store the next name found in the manifest file (this would be atribuited to the
+        // if my code sees the "PREFAB:" keyword it would then store the next name found in the manifest file (this would be attributed to the
         // type of prefab that I wish to be created), so for an example if my code saw this line "PREFAB: OUTWARDSROOM" it would store "OUTWARDSROOM"
         // into a variable called "prefabName" and compare it to all of my possible keywords, if it matches any it would then add all of their assigned 
         // coordinates to be re-rendered, therefore creating a large structure at once and only calling one game object in the manifest file 
@@ -265,7 +265,7 @@ void ExampleGO::Load(ifstream& _file)
         }
     }
 
-    // if my list of coordinates is found empty "meaning that it doesent have any prefabs or offsets" I just add a set of coordinates on the origin
+    // if my list of coordinates is found empty "meaning that it doesn't have any prefabs or offsets" I just add a set of coordinates on the origin
     // this will make sure that only one object will be instantiated and that it would be right on the origin 
     // "basically just setting them to be on the "POS:" that is set in the manifest file" 
     if (m_modelOffsets.empty())
@@ -296,7 +296,7 @@ void ExampleGO::PreRender()
 void ExampleGO::Render()
 {
     // this loop renders the model multiple times, once per added position on the (m_modelOffsets)
-    // this structure allows me to re-utilize the same model multiple times without having to call multiple different gameobjects in the manifest
+    // this structure allows me to re-utilize the same model multiple times without having to call multiple different game objects in the manifest
     for (const auto& offset : m_modelOffsets)
     {
         // this line assigns the exact position for every instance, by getting their world matrix and adding the offsets that we assigned
