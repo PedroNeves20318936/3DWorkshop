@@ -28,6 +28,10 @@ void SpotLight::Load(ifstream& _file)
 	float cutoffOuterDegrees;
 	StringHelp::Float(_file, "OUTERCUTOFF", cutoffOuterDegrees);
 	m_cutoffOuterAngle = glm::cos(glm::radians(cutoffOuterDegrees));
+
+	StringHelp::Float(_file, "CONSTANT", m_constant);
+	StringHelp::Float(_file, "LINEAR", m_linear);
+	StringHelp::Float(_file, "QUADRATIC", m_quadratic);
 }
 
 void SpotLight::SetRenderValues(unsigned int _prog)
@@ -55,4 +59,12 @@ void SpotLight::SetRenderValues(unsigned int _prog)
 	if (Helper::SetUniformLocation(_prog, outCutString.c_str(), &loc))
 		glUniform1f(loc, m_cutoffOuterAngle);
 
+	if (Helper::SetUniformLocation(_prog, (m_name + "Constant").c_str(), &loc))
+		glUniform1f(loc, m_constant);
+
+	if (Helper::SetUniformLocation(_prog, (m_name + "Linear").c_str(), &loc))
+		glUniform1f(loc, m_linear);
+
+	if (Helper::SetUniformLocation(_prog, (m_name + "Quadratic").c_str(), &loc))
+		glUniform1f(loc, m_quadratic);
 }

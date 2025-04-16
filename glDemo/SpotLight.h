@@ -23,6 +23,9 @@ protected:
 	vec3 m_direction;
 	float m_cutoffAngle;
 	float m_cutoffOuterAngle;
+	float m_constant;
+	float m_linear;
+	float m_quadratic;
 
 };
 

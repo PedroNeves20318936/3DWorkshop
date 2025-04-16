@@ -13,6 +13,10 @@ uniform vec3 SPOAmb;
 uniform float SPOCutoff;
 uniform float SPOOuterCutoff;
 
+uniform float SPOConstant;
+uniform float SPOLinear;
+uniform float SPOQuadratic;
+
 
 in SimplePacket {
 	
@@ -36,8 +40,12 @@ void main(void) {
 	float epsilon = SPOCutoff - SPOOuterCutoff;
     float intensity = clamp((theta - SPOOuterCutoff) / epsilon, 0.0, 1.0);
 
+	float distance = length(SPOPos - inputFragment.surfaceWorldPos);
+    float attenuation = 1.0 / (SPOConstant + SPOLinear * distance + SPOQuadratic * (distance * distance));
+	attenuation = clamp(attenuation, 0.0, 1.0);
+
     l = max(dot(N, lightDir), 0.0);
-    l *= intensity;
+    l *= intensity * attenuation;
 
 	vec4 surfaceColour = texture2D(texture, inputFragment.texCoord);
 	vec3 diffuseColour = surfaceColour.rgb * SPOCol * l;
