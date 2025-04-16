@@ -255,5 +255,7 @@
     <None Include="Assets\Shaders\texture-point.frag" />
     <None Include="Assets\Shaders\texture-spot.frag" />
     <None Include="Assets\Shaders\texture-spot.vert" />
+    <None Include="Assets\Shaders\texture-all.vert" />
+    <None Include="Assets\Shaders\texture-all.frag" />
   </ItemGroup>
 </Project>

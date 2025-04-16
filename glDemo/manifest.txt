@@ -199,7 +199,7 @@ NAME: DUNGEONWALL
 FILE: Assets\\Textures\\DungeonWall.png
 }
 
-SHADERS 5
+SHADERS 6
 {
 NAME: FLAT
 VERTFILE: Assets\\Shaders\\flatColour.vert
@@ -224,6 +224,11 @@ FRAGFILE: Assets\\Shaders\\texture-point.frag
 NAME: TEXSPO
 VERTFILE: Assets\\Shaders\\texture-spot.vert
 FRAGFILE: Assets\\Shaders\\texture-spot.frag
+}
+{
+NAME: TEXALL
+VERTFILE: Assets\\Shaders\\texture-all.vert
+FRAGFILE: Assets\\Shaders\\texture-all.frag
 }
 
 GAMEOBJECTS 22
