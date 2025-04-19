@@ -27,7 +27,6 @@ void PointLight::SetRenderValues(unsigned int _prog)
 	Light::SetRenderValues(_prog);
 
 	GLint loc;
-	std::string baseString = m_name + "Poi";
 
 	if (Helper::SetUniformLocation(_prog, (m_name + "Constant").c_str(), &loc))
 		glUniform1f(loc, m_constant);

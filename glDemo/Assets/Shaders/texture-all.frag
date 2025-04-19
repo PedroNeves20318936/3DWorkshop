@@ -14,6 +14,14 @@ uniform float POIConstant;
 uniform float POILinear;
 uniform float POIQuadratic;
 
+uniform vec3 POI2Col;
+uniform vec3 POI2Amb;
+uniform vec3 POI2Pos;
+
+uniform float POI2Constant;
+uniform float POI2Linear;
+uniform float POI2Quadratic;
+
 uniform vec3 SPOPos;
 uniform vec3 SPODir;
 uniform vec3 SPOCol;
@@ -82,6 +90,24 @@ vec3 ApplyPointLight() {
 	return ambient + diffuse;
 }
 
+vec3 ApplyPointLight2() {
+	vec3 N = normalize(inputFragment.surfaceNormal);
+	vec3 lightDir = normalize(POI2Pos - inputFragment.surfaceWorldPos);
+
+	float lambert = max(dot(N, lightDir), 0.0);
+	float distance = length(POI2Pos - inputFragment.surfaceWorldPos);
+
+	float attenuation = 1.0 / (POI2Constant + POI2Linear * distance + POI2Quadratic * (distance * distance));
+	attenuation = clamp(attenuation, 0.0, 1.0);
+
+	vec4 surfaceColour = texture2D(texture, inputFragment.texCoord);
+	vec3 diffuse = surfaceColour.rgb * POI2Col * lambert * attenuation;
+
+	vec3 ambient = POI2Amb * attenuation;
+
+	return ambient + diffuse;
+}
+
 vec3 ApplyDirectionalLight()
 {
 	vec3 N = normalize(inputFragment.surfaceNormal);
@@ -94,6 +120,6 @@ vec3 ApplyDirectionalLight()
 }
 
 void main(void) {
-	vec3 lighting = ApplyDirectionalLight() + ApplyPointLight() +  ApplySpotLight();
+	vec3 lighting = ApplyDirectionalLight() + ApplyPointLight2() + ApplyPointLight() +  ApplySpotLight();
 	fragColour = vec4(lighting, 1.0);
 }
