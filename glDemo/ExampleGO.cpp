@@ -258,6 +258,67 @@ void ExampleGO::Load(ifstream& _file)
                 Add(-10, 2, 22);
                 Add(-10, 2, 14);
             }
+            else if (prefabName == "PILLAR")
+            {
+                // Central Room
+                Add(4.0, 0, 4);
+                Add(4.0, 0, -4);
+                Add(-4.0, 0, 4);
+                Add(-4.0, 0, -4);
+                // Hallways
+                Add(4.0, 0.0, 14.0);
+                Add(4.0, 0.0, -14.0);
+                Add(-4.0, 0.0, 14.0);
+                Add(-4.0, 0.0, -14.0);
+                Add(14.0, 0.0, 4.0);
+                Add(14.0, 0.0, -4.0);
+                Add(-14.0, 0.0, 4.0);
+                Add(-14.0, 0.0, -4.0);
+                // Outwards End Of Hallway
+                Add(22.0, 0.0, -4.0);
+                Add(22.0, 0.0, 4.0);
+                Add(-22.0, 0.0, -4.0);
+                Add(-22.0, 0.0, 4.0);
+                Add(4.0, 0.0, -22.0);
+                Add(4.0, 0.0, 22.0);
+                Add(-4.0, 0.0, -22.0);
+                Add(-4.0, 0.0, 22.0);
+                // Corners
+                Add(20.0, 0.0, -20.0);
+                Add(-20.0, 0.0, 20.0);
+                Add(20.0, 0.0, 20.0);
+                Add(-20.0, 0.0, -20.0);
+            }
+            else if (prefabName == "BARREL")
+            {
+                // Central Room
+                Add(0.0, 0.0, 0.0);
+                Add(-20.0, 0.0, -20.0);
+                Add(-30.0, 0.0, -13.0);
+            }
+            else if (prefabName == "GRAVE")
+            {
+                // Back Row
+                Add(0.0, 0.0, 0.0);
+                Add(6.0, 0.0, 0.0);
+                Add(-6.0, 0.0, 0.0);
+                // Midle Row
+                Add(0.0, 0.0, 12.0);
+                Add(6.0, 0.0, 12.0);
+                Add(-6.0, 0.0, 12.0);
+                // Front Row
+                Add(0.0, 0.0, 24.0);
+                Add(6.0, 0.0, 24.0);
+                Add(-6.0, 0.0, 24.0);
+            }
+            else if (prefabName == "DUMMY")
+            {
+                // Back Row
+                Add(3.0, 0.0, 0.0);
+                Add(-3.0, 0.0, 0.0);
+                Add(3.0, 0.0, 12.0);
+                Add(-3.0, 0.0, 12.0);
+            }
         }
         else if (token == "}")
         {
