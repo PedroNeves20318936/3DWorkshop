@@ -346,6 +346,7 @@ void updateScene()
 	Camera* cam = g_Scene->GetActiveCamera();
 	float speed = 5.0f * tDelta;
 
+	// Here is where I control the speed in which my cameras go (FPS, FPSMODEL and ORTHOGRAPHIC)
 	if (glfwGetKey(g_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) 
 	{
 		speed *= 5.0f;
@@ -357,10 +358,14 @@ void updateScene()
 
 	glm::vec3 movement(0.0f);
 
+	// Here is where I receive the inputs for the movement of my cameras and determine the direction they should go,
+	// it is also important to notice that it is done in a way that allows for diagonal movement
 	movement.z = (glfwGetKey(g_window, GLFW_KEY_W) == GLFW_PRESS) - (glfwGetKey(g_window, GLFW_KEY_S) == GLFW_PRESS);
 	movement.x = (glfwGetKey(g_window, GLFW_KEY_D) == GLFW_PRESS) - (glfwGetKey(g_window, GLFW_KEY_A) == GLFW_PRESS);
 	movement.y = (glfwGetKey(g_window, GLFW_KEY_E) == GLFW_PRESS) - (glfwGetKey(g_window, GLFW_KEY_Q) == GLFW_PRESS);
 
+	// Then here I check if "movement > 0.0f", if so I call for the normalization of movement (so diagonal movement is not faster)
+	// and call for the actual "moveCamera" function (take a look at the cameras for more info about this function)
 	if (glm::length(movement) > 0.0f) {
 		movement = glm::normalize(movement);
 		cam->moveCamera(movement.z, movement.x, movement.y, speed);

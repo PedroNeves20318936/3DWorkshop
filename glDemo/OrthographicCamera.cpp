@@ -30,6 +30,7 @@ void OrthographicCamera::calculateDerivedValues() {
 	float orthoHeight = 10.0f;
 	float orthoWidth = orthoHeight * m_aspect;
 
+	// Here we use an "ortho" projection instead of "perspective" which is the trick to get isometric cameras in OpenGL
 	m_projectionMatrix = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, m_nearPlane, m_farPlane);
 	//m_projectionMatrix = glm::perspective(glm::radians(m_fovY), m_aspect, m_nearPlane, m_farPlane);
 }
@@ -44,7 +45,7 @@ void OrthographicCamera::calculateDerivedValues() {
 
 // initialise camera parameters so it is placed at the origin looking down the -z axis (for a right-handed camera) or +z axis (for a left-handed camera)
 OrthographicCamera::OrthographicCamera() {
-
+	// theta and phi have predefined values to make sure the orthographic camera is slightly tilted (for that isometric look)
 	m_theta = -35.0f;
 	m_phi = -35.0f;
 	m_radius = 15.0f;
@@ -212,12 +213,21 @@ glm::mat4 OrthographicCamera::projectionTransform() {
 	return m_projectionMatrix;
 }
 
+// Function to move my camera you can see that in this specific camera it is missing the "deltaUp" on the movement vec3
+// thats because I don't want it to translate on the Y axis (up and down)
 void OrthographicCamera::moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed) {
+
+	// First I define the "yaw" based on how much the camera has turned left or right (defined by m_phi)
 	glm::quat yaw = glm::angleAxis(glm::radians(m_phi), glm::vec3(0, 1, 0));
+
+	// The "yaw" then is used to figure out the forward (this is so that we can figure out where the cam is facing)
 	glm::vec3 forward = glm::normalize(yaw * glm::vec3(0, 0, -1));
+	// And the "yaw" is used once more to figure out the right of our camera (basically the same as the "forward" but to figure out where the right of our camera is)
 	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));
 
+	// After defining the directions we combine it all into a vec3 
 	glm::vec3 movement = (forward * deltaForward + right * deltaRight) * speed;
+	// Add this movement into our current position to actually move the camera around
 	m_pos += glm::vec4(movement, 0.0f);
 
 	// Print the updated position
@@ -225,6 +235,7 @@ void OrthographicCamera::moveCamera(float deltaForward, float deltaRight, float 
 		<< ", Y = " << m_pos.y
 		<< ", Z = " << m_pos.z << std::endl;*/
 
+		// Update the camera's view and projection matrices based on the new position.
 	calculateDerivedValues();
 }
 

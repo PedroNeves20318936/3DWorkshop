@@ -38,6 +38,8 @@ public:
 	//this GameObject should be drawn in THIS render pass
 	RenderPass GetRP() { return m_RP; }
 
+
+	// Created these setters to make the monster models attach to the "FPSMODELCAMERA" (take a look at FPSModelCam.cpp for more info :p)
 	void SetPosition(const glm::vec3& pos) { m_pos = pos; }
 	void SetRotation(const glm::vec3& rot) { m_rot = rot; }
 

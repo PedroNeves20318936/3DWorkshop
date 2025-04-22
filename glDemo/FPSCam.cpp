@@ -20,10 +20,10 @@ void FPSCam::calculateDerivedValues() {
 	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));
 	glm::quat pitch = glm::angleAxis(theta_, right);
 
-	// calculate camera orientation (change the perspective when we nove the camera :p )
+	// calculate camera orientation (change the perspective when we move the camera :p )
 	glm::quat camOrientation = pitch * yaw;
 
-	// create camera rotation matrix for 
+	// create camera rotation matrix
 	glm::mat4 cameraRotationMatrix = glm::mat4_cast(camOrientation);
 
 	glm::vec3 forward = glm::normalize(cameraRotationMatrix * glm::vec4(0, 0, -1, 0));
@@ -213,13 +213,19 @@ glm::mat4 FPSCam::projectionTransform() {
 }
 
 void FPSCam::moveCamera(float deltaForward, float deltaRight, float deltaUp, float speed) {
+	// First I define the "yaw" based on how much the camera has turned left or right (defined by m_phi)
 	glm::quat yaw = glm::angleAxis(glm::radians(m_phi), glm::vec3(0, 1, 0));
+	// The "yaw" then is used to figure out the forward (this is so that we can figure out where the cam is facing)
 	glm::vec3 forward = glm::normalize(yaw * glm::vec3(0, 0, -1));
+	// And the "yaw" is used once more to figure out the right of our camera (basically the same as the "forward" but to figure out where the right of our camera is)
 	glm::vec3 right = glm::normalize(yaw * glm::vec3(1, 0, 0));
 
+	// After defining the directions we combine it all into a vec3 
 	glm::vec3 movement = (forward * deltaForward + right * deltaRight + glm::vec3(0, deltaUp, 0)) * speed;
+	// Add this movement into our current position to actually move the camera around
 	m_pos += glm::vec4(movement, 0.0f);
 
+	// Update the camera's view and projection matrices based on the new position.
 	calculateDerivedValues();
 }
 
