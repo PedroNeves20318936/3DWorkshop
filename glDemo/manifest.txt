@@ -317,9 +317,9 @@ NAME: SKYBOX
 FILE: Assets\\Textures\\CubeMap_Cave.png
 }
 {
-TYPE: FIF_PNG
+TYPE: FIF_JPEG
 NAME: WINDOW
-FILE: Assets\\Textures\\Window.png
+FILE: Assets\\Textures\\WindowTex.jpeg
 }
 {
 TYPE: FIF_PNG
