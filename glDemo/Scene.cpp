@@ -209,6 +209,7 @@ void Scene::Render()
 			// reverts settings to normal
 			glDepthMask(GL_TRUE);
 			glDisable(GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ZERO);
 		}
 
 	}
